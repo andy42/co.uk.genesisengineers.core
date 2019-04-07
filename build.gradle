@@ -1,4 +1,4 @@
-group 'core'
+group 'co.uk.genesisengineers.core'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
