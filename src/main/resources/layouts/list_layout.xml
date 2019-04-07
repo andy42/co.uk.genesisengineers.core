@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecyclerView
+        id="recyclerView"
+        background_color="#eaffea"
+        layout_width="200"
+        layout_height="300"/>
