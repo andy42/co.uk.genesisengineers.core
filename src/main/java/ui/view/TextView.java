@@ -1,15 +1,12 @@
 package ui.view;
 
 import com.sun.javafx.geom.Vec3f;
+import content.Context;
 import input.KeyEvent;
-import ui.Context;
 import ui.util.AttributeParser;
 import ui.util.AttributeSet;
-import util.Logger;
 import util.Vector2Df;
 import visualisation.Visualisation;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class TextView extends View {
 

@@ -4,10 +4,10 @@ package ui.view;
 //http://www.xmlpull.org/v1/download/unpacked/doc/quick_intro.html
 //https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/util/XmlPullAttributes.java
 
+import content.Context;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
-import ui.Context;
 import ui.util.AttributeSet;
 import ui.util.Xml;
 import util.FileLoader;

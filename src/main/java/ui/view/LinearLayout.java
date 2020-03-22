@@ -1,13 +1,11 @@
 package ui.view;
 
 
-import ui.Context;
+import content.Context;
 import ui.util.AttributeParser;
 import ui.util.AttributeSet;
-import util.Logger;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class LinearLayout extends ViewGroup {
 

@@ -1,8 +1,8 @@
 package ui.view;
 
 import com.sun.javafx.geom.Vec3f;
+import content.Context;
 import input.MotionEvent;
-import ui.Context;
 import ui.util.AttributeSet;
 import util.Logger;
 import util.Vector2Df;

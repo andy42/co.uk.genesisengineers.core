@@ -8,8 +8,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 import java.nio.ByteBuffer;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.lwjgl.BufferUtils;
 
 public class ResourceLoader {
@@ -89,5 +92,25 @@ public class ResourceLoader {
         if (in == null)
             return ResourceLoader.class.getResourceAsStream("/" + path);
         return in;
+    }
+
+    public static JSONObject getJsonObject(String path){
+        String jsonString = getText(path);
+        if(jsonString == null) return null;
+
+        return new JSONObject(jsonString);
+    }
+
+    public static JSONArray getJsonArray(String path){
+        String jsonString = getText(path);
+        if(jsonString == null) return null;
+
+        return new JSONArray(jsonString);
+    }
+
+    public static File getFile(String path){
+        URL url = ResourceLoader.class.getClassLoader().getResource(path);
+        if(url == null) return null;
+        return new File(url.getPath());
     }
 }

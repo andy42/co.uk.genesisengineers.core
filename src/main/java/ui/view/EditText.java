@@ -1,7 +1,6 @@
 package ui.view;
 
-import input.MotionEvent;
-import ui.Context;
+import content.Context;
 import ui.util.AttributeParser;
 import ui.util.AttributeSet;
 

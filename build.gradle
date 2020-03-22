@@ -25,7 +25,8 @@ repositories {
     mavenCentral()
 }
 
-
+sourceSets.main.java.srcDirs = ['build/generated/java','src/main/java']
+sourceSets.main.resources.srcDirs = ['build/generated/resources','src/main/resources']
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'

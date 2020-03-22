@@ -1,6 +1,8 @@
 package visualisation;
 
 import com.sun.javafx.geom.Vec3f;
+import content.Context;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import sun.plugin2.util.ColorUtil;
 import sun.rmi.runtime.Log;
@@ -13,7 +15,9 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.IntBuffer;
 
+import static org.lwjgl.glfw.GLFW.glfwGetMonitorPhysicalSize;
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
@@ -31,6 +35,9 @@ public class Visualisation {
 
     private int windowWidth = 1;
     private int windowHeight = 1;
+
+    private int monitorWidth = 1;
+    private int monitorHeight = 1;
 
     private ShaderProgram shaderProgramTexture = new ShaderProgram();
     private ShaderProgram shaderProgramColour = new ShaderProgram();
@@ -86,9 +93,9 @@ public class Visualisation {
         // Set the window background color
         glClearColor(1.0f, 0.5f, 0.0f, 0.0f);
 
+
+
         this.initShaders();
-
-
     }
 
     public void loadFonts () {

@@ -1,20 +1,23 @@
 package ui.activity;
 
 import com.sun.javafx.geom.Vec3f;
+import content.Context;
+import content.Resources;
 import input.KeyEvent;
 import input.MotionEvent;
-import input.Mouse;
 import ui.util.AttributeParser;
 import ui.view.View;
-import ui.view.ViewGroup;
 import util.CollisionBox;
-import util.Logger;
 import util.Vector2Df;
 import visualisation.Visualisation;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public abstract class Activity {
+public abstract class Activity extends Context {
+
+    protected Context baseContext;
+
+
     protected boolean open = false;
     protected View view = null;
 
@@ -32,8 +35,14 @@ public abstract class Activity {
     protected Vector2Df position = new Vector2Df(100, 100);
 
     public Activity () {
+        //baseContext = context;
         dragBarColor = AttributeParser.colorFromString("#8e8e8e");
     }
+
+//    @Override
+//    public Resources getResources(){
+//        return baseContext.getResources();
+//    }
 
     public boolean isOpen () {
         return this.open;

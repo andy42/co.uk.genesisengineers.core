@@ -1,12 +1,11 @@
 package ui.view;
 
+import content.Context;
 import input.KeyEvent;
-import ui.Context;
 import ui.util.AttributeParser;
 import ui.util.AttributeSet;
 import input.MotionEvent;
 import util.CollisionBox;
-import util.Logger;
 
 import java.util.ArrayList;
 import java.util.List;

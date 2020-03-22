@@ -16,6 +16,7 @@ public class GameClient extends Listener {
 
         Network.register(this.client);
 
+
         client.addListener(new ThreadedListener(new Listener() {
             public void connected (Connection connection) {
                 Network.StringMessage message = new Network.StringMessage("hello world");

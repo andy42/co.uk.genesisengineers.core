@@ -1,15 +1,11 @@
 package ui.view;
 
 import com.sun.javafx.geom.Vec3f;
-import input.MotionEvent;
-import ui.Context;
+import content.Context;
 import ui.util.AttributeParser;
 import ui.util.AttributeSet;
-import util.Logger;
 import util.Vector2Df;
 import visualisation.Visualisation;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class Button extends View {
     private String text;
