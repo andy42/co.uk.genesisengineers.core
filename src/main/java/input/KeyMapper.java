@@ -12,11 +12,6 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class KeyMapper extends Input {
 
-    private boolean moveLeft = false;
-    private boolean moveRight = false;
-    private boolean moveUp = false;
-    private boolean moveDown = false;
-
     private boolean capsOn = false;
 
     private static KeyMapper s_instance = null;
@@ -41,17 +36,6 @@ public class KeyMapper extends Input {
             setWindow(window);
             handleKeyPress(key, action);
         });
-    }
-
-    private boolean updateKey (int key, int action, int matchKey, boolean currentValue) {
-
-        if (key == matchKey && action == GLFW_PRESS) {
-            return true;
-        } else if (key == matchKey && action == GLFW_RELEASE) {
-            return false;
-        } else {
-            return currentValue;
-        }
     }
 
     private void addCurrentPressedKeys(int key, double time){
@@ -96,10 +80,6 @@ public class KeyMapper extends Input {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
             glfwSetWindowShouldClose(this.window, true); // We will detect this in the rendering loop
         }
-        this.moveUp = updateKey(key, action, GLFW_KEY_W, this.moveUp);
-        this.moveLeft = updateKey(key, action, GLFW_KEY_A, this.moveLeft);
-        this.moveDown = updateKey(key, action, GLFW_KEY_S, this.moveDown);
-        this.moveRight = updateKey(key, action, GLFW_KEY_D, this.moveRight);
     }
 
     public void update(){
@@ -110,22 +90,6 @@ public class KeyMapper extends Input {
                 keyDownData.lastUpdate = currentTime;
             }
         }
-    }
-
-    public boolean isMoveLeft () {
-        return this.moveLeft;
-    }
-
-    public boolean isMoveRight () {
-        return this.moveRight;
-    }
-
-    public boolean isMoveUp () {
-        return this.moveUp;
-    }
-
-    public boolean isMoveDown () {
-        return this.moveDown;
     }
 
     public KeyEvent getNextKeyEvent(){

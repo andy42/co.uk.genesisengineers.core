@@ -12,6 +12,7 @@ public class MotionEvent implements Cloneable{
     public static final int ACTION_UP = 2;
     public static final int ACTION_MOVE = 3;
     public static final int ACTION_CANCEL = 4;
+    public static final int ACTION_SCROLL = 5;
 
     public MotionEvent(int action, Vector2Df position, Vector2Df motion){
         this.action = action;

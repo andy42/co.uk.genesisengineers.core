@@ -60,7 +60,7 @@ public class Mouse extends Input {
         });
 
         glfwSetScrollCallback(windowLong, (long win, double dx, double dy) -> {
-                Logger.info("dx = "+dx+", dy = "+dy);
+            motionEventQueue.add(new MotionEvent(MotionEvent.ACTION_SCROLL, position, new Vector2Df(dx, dy)));
         });
     }
 

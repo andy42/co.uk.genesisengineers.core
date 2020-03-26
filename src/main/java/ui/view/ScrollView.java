@@ -170,6 +170,9 @@ public class ScrollView extends ViewGroup {
         if(motionEvent.getAction() == MotionEvent.ACTION_MOVE && child != null){
             moveChild(child, motionEvent.getMotion());
         }
+        else if(motionEvent.getAction() == MotionEvent.ACTION_SCROLL && child != null){
+            moveChild(child, motionEvent.getMotion().multiply(new Vector2Df(10, 10)));
+        }
         return true;
     }
 

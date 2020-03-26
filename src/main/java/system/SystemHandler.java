@@ -1,6 +1,8 @@
 package system;
 
 import entity.EntityHandler;
+import input.KeyEvent;
+import input.MotionEvent;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -44,5 +46,23 @@ public class SystemHandler implements Iterable<SystemBase> {
         for (SystemBase system : systemList) {
             system.update();
         }
+    }
+
+    public boolean dispatchKeyEvent(KeyEvent keyEvent){
+        for (SystemBase system : systemList) {
+            if(system instanceof KeyEventListener){
+                ((KeyEventListener) system).dispatchKeyEvent(keyEvent);
+            }
+        }
+        return false;
+    }
+
+    public boolean dispatchTouchEvent(MotionEvent motionEvent){
+        for (SystemBase system : systemList) {
+            if(system instanceof MotionEventListener){
+                ((MotionEventListener) system).dispatchTouchEvent(motionEvent);
+            }
+        }
+        return false;
     }
 }

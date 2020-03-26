@@ -244,19 +244,27 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
         recyclerView.addView(newView);
     }
 
+    protected void scrollRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter, Vector2Df scrollAmount){
+        recyclerView.positionOffset = recyclerView.positionOffset.add(scrollAmount);
+
+        if( ((this.orientation == VERTICAL) ? scrollAmount.y : scrollAmount.x) < 0){
+            walkViewsToStart(recyclerView, adapter);
+        } else {
+            walkViewsToEnd(recyclerView, adapter);
+        }
+
+        removeViewsOutOfBounds(recyclerView);
+    }
+
     public boolean dispatchTouchEvent(RecyclerView recyclerView, RecyclerView.Adapter adapter, MotionEvent motionEvent){
         if(motionEvent.getAction() == MotionEvent.ACTION_MOVE){
             Vector2Df scrollAmount = moveAmount(recyclerView, adapter, motionEvent.getMotion());
-            recyclerView.positionOffset = recyclerView.positionOffset.add(scrollAmount);
-
-            if( ((this.orientation == VERTICAL) ? scrollAmount.y : scrollAmount.x) < 0){
-                walkViewsToStart(recyclerView, adapter);
-            } else {
-                walkViewsToEnd(recyclerView, adapter);
-            }
-
-            removeViewsOutOfBounds(recyclerView);
-
+            scrollRecyclerView(recyclerView, adapter, scrollAmount);
+            this.touchTarget = null;
+        }
+        else if(motionEvent.getAction() == MotionEvent.ACTION_SCROLL){
+            Vector2Df scrollAmount = moveAmount(recyclerView, adapter, motionEvent.getMotion()).multiply(new Vector2Df(10, 10));
+            scrollRecyclerView(recyclerView, adapter, scrollAmount);
             this.touchTarget = null;
         }
 

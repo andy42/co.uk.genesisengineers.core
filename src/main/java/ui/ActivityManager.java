@@ -15,6 +15,7 @@ import java.util.*;
 public class ActivityManager {
 
     private static ActivityManager s_instance = null;
+    private boolean windowHasFocus = false;
 
     public static ActivityManager getInstance () {
         if (s_instance == null) {
@@ -58,7 +59,10 @@ public class ActivityManager {
         if(activityList.size() == 0){
             return false;
         }
-        return activityList.getFirst().dispatchKeyEvent(keyEvent);
+        else if(windowHasFocus){
+            return activityList.getFirst().dispatchKeyEvent(keyEvent);
+        }
+        return false;
     }
 
     public Boolean dispatchTouchEvent (MotionEvent motionEvent) {
@@ -67,18 +71,21 @@ public class ActivityManager {
             return false;
         }
 
-        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN || motionEvent.getAction() == MotionEvent.ACTION_SCROLL){
             for (Activity activity : activityList) {
                 if(activity.pointCollisionTest(motionEvent)){
+                    windowHasFocus = true;
                     activityList.remove(activity);
                     activityList.addFirst(activity);
                     return activity.dispatchTouchEvent(motionEvent);
                 }
             }
+            windowHasFocus = false;
             return false;
         }
-        else {
+        else if(windowHasFocus){
             return activityList.get(0).dispatchTouchEvent(motionEvent);
         }
+        else return false;
     }
 }
