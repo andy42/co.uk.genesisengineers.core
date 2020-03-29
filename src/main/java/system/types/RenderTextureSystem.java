@@ -1,10 +1,12 @@
 package system.types;
 
+import com.sun.javafx.geom.Vec3f;
 import entity.Entity;
 import entity.EntityHandler;
 import entity.component.ComponentBase;
 import entity.component.types.BasicTexturedSquare;
 import entity.component.types.Position;
+import entity.component.types.Select;
 import system.SystemBase;
 import visualisation.Visualisation;
 
@@ -31,6 +33,7 @@ public class RenderTextureSystem extends SystemBase {
     public void update () {
         Visualisation visualisation = Visualisation.getInstance();
         visualisation.useTextureProgram();
+
 
         Position position = null;
         BasicTexturedSquare basicSquare = null;

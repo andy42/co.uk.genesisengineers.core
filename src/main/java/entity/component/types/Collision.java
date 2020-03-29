@@ -1,5 +1,6 @@
 package entity.component.types;
 
+import content.entityPrototypeFactory.ComponentAttributes;
 import entity.component.ComponentBase;
 import util.Vector2Df;
 
@@ -14,8 +15,19 @@ public class Collision extends ComponentBase {
         halfDimensions = Vector2Df.multiply(dimensions, 0.5f);
     }
 
+    public Collision (ComponentAttributes componentAttributes) {
+        this();
+        Vector2Df dimensions = componentAttributes.getVector2Df("dimensions", new Vector2Df(1,1));
+        halfDimensions = Vector2Df.multiply(dimensions, 0.5f);
+    }
+
     public Collision () {
         this.type = Type.COLLISION;
+    }
+
+    @Override
+    public ComponentBase clone() {
+        return new Collision(Vector2Df.multiply(halfDimensions, 2f));
     }
 
     public Vector2Df getCollisionBoxDimension () {
@@ -24,6 +36,9 @@ public class Collision extends ComponentBase {
 
     public void setCollisionBoxDimension (Vector2Df dimensions) {
         this.halfDimensions = Vector2Df.multiply(dimensions, 0.5f);
+    }
+    private void setHalfDimensions(Vector2Df halfDimensions){
+        this.halfDimensions = halfDimensions;
     }
 
     public Vector2Df getHalfDimensions () {

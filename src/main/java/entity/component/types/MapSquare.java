@@ -1,5 +1,6 @@
 package entity.component.types;
 
+import content.entityPrototypeFactory.ComponentAttributes;
 import entity.component.ComponentBase;
 import util.Vector2Df;
 
@@ -39,6 +40,18 @@ public class MapSquare extends ComponentBase {
             //TODO these are temp values, will us passed defaults or entire map tile values
             mapArray.add(new MapTile(1, 3));
         }
+    }
+
+    public MapSquare (ComponentAttributes componentAttributes) {
+        this(
+                componentAttributes.getVector2Df("boardDimensions", new Vector2Df(1,1)),
+                componentAttributes.getVector2Df("tileDimensions", new Vector2Df(1,1))
+        );
+    }
+
+    @Override
+    public ComponentBase clone() {
+        return new MapSquare(boardDimensions.copy(),tileDimensions.copy());
     }
 
     public void setAllTileTextures (int textureId, int textureRegionIndex) {

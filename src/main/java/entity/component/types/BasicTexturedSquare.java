@@ -1,5 +1,6 @@
 package entity.component.types;
 
+import content.entityPrototypeFactory.ComponentAttributes;
 import entity.component.ComponentBase;
 import util.Vector2Df;
 
@@ -14,6 +15,22 @@ public class BasicTexturedSquare extends ComponentBase {
         this.textureId = textureId;
         this.textureRegionIndex = textureRegionIndex;
 
+    }
+
+    public BasicTexturedSquare (ComponentAttributes componentAttributes) {
+        this();
+        this.dimensions = componentAttributes.getVector2Df("dimensions", dimensions);
+        this.textureId = componentAttributes.getIntValue("textureId", 0);
+        this.textureRegionIndex = componentAttributes.getIntValue("textureRegionIndex", 0);
+    }
+
+    @Override
+    public ComponentBase clone() {
+        return new BasicTexturedSquare(
+                dimensions.copy(),
+                textureId,
+                textureRegionIndex
+        );
     }
 
     public BasicTexturedSquare () {
