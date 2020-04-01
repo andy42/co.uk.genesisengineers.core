@@ -1,11 +1,12 @@
-package content.entityPrototypeFactory;
+package content.entityPrototypeFactory.json;
 
 import com.esotericsoftware.jsonbeans.JsonException;
+import content.entityPrototypeFactory.ComponentAttributes;
 import org.json.JSONException;
 import org.json.JSONObject;
 import util.Vector2Df;
 
-public class ComponentAttributesJSON implements ComponentAttributes{
+public class ComponentAttributesJSON implements ComponentAttributes {
     JSONObject jsonObject;
 
     public ComponentAttributesJSON(JSONObject jsonObject){

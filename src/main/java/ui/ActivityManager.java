@@ -1,6 +1,7 @@
 package ui;
 
 import clock.ClockHandler;
+import content.Context;
 import input.KeyEvent;
 import input.MotionEvent;
 import input.Mouse;
@@ -14,23 +15,32 @@ import java.util.*;
 
 public class ActivityManager {
 
+    private Context context;
     private static ActivityManager s_instance = null;
     private boolean windowHasFocus = false;
 
-    public static ActivityManager getInstance () {
+    public static ActivityManager createInstance(Context context){
         if (s_instance == null) {
-            s_instance = new ActivityManager();
+            s_instance = new ActivityManager(context);
         }
         return s_instance;
     }
 
-    private ActivityManager () {
+    public static ActivityManager getInstance () {
+        if (s_instance == null) {
+            throw new RuntimeException("ActivityManager must be created in main");
+        }
+        return s_instance;
+    }
 
+    private ActivityManager (Context context) {
+        this.context = context;
     }
 
     private LinkedList<Activity> activityList = new LinkedList<>();
 
     public void addActivity (Activity activity) {
+        activity.setBaseContext(context);
         activityList.add(activity);
         activity.onCreate();
         activity.onMeasure(500, 500);
