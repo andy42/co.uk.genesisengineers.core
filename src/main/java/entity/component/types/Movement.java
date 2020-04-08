@@ -1,5 +1,6 @@
 package entity.component.types;
 
+import content.entityPrototypeFactory.ComponentAttributes;
 import entity.component.ComponentBase;
 import util.Vector2Df;
 
@@ -16,7 +17,6 @@ public class Movement extends ComponentBase {
         this.startPosition = startPosition;
     }
 
-
     public Movement (Vector2Df startPosition, Vector2Df startVelocity, Vector2Df acceleration) {
         this();
         this.lastPosition = startPosition;
@@ -24,6 +24,23 @@ public class Movement extends ComponentBase {
         this.startVelocity = startVelocity;
         this.acceleration = acceleration;
         this.startTime = 0;
+    }
+
+    public Movement (ComponentAttributes componentAttributes) {
+        this(
+                componentAttributes.getVector2Df("startPosition", new Vector2Df(1,1)),
+                componentAttributes.getVector2Df("startVelocity", new Vector2Df()),
+                componentAttributes.getVector2Df("acceleration", new Vector2Df())
+        );
+    }
+
+    @Override
+    public ComponentBase clone() {
+        return new Movement(
+                startPosition.copy(),
+                startVelocity.copy(),
+                acceleration.copy()
+        );
     }
 
     public Movement () {

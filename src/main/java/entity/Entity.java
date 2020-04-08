@@ -4,14 +4,22 @@ import entity.component.ComponentBase;
 
 import java.util.ArrayList;
 
-public class Entity {
+public class Entity implements Cloneable{
 
 
     private int id;
     private ArrayList<ComponentBase> componentList = new ArrayList<>();
 
-    Entity (int id) {
+    public Entity (int id) {
         this.id = id;
+    }
+
+    public Entity clone(int id) {
+        Entity clone = new Entity(id);
+        for (ComponentBase component : componentList) {
+            clone.addComponent(component.clone());
+        }
+        return clone;
     }
 
     public int getId () {

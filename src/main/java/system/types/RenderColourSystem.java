@@ -1,10 +1,12 @@
 package system.types;
 
+import com.sun.javafx.geom.Vec3f;
 import entity.Entity;
 import entity.EntityHandler;
 import entity.component.ComponentBase;
 import entity.component.types.BasicColouredSquare;
 import entity.component.types.Position;
+import entity.component.types.Select;
 import system.SystemBase;
 import visualisation.Visualisation;
 
@@ -33,6 +35,7 @@ public class RenderColourSystem extends SystemBase {
 
         Position position = null;
         BasicColouredSquare basicSquare = null;
+
         for (Entity entity : entityList) {
             position = (Position) entity.getComponent(ComponentBase.Type.POSITION);
             basicSquare = (BasicColouredSquare) entity.getComponent(ComponentBase.Type.BASIC_COLOURED_SQUARE);

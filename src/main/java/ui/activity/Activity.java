@@ -39,10 +39,14 @@ public abstract class Activity extends Context {
         dragBarColor = AttributeParser.colorFromString("#8e8e8e");
     }
 
-//    @Override
-//    public Resources getResources(){
-//        return baseContext.getResources();
-//    }
+    public void setBaseContext(Context context){
+        this.baseContext = context;
+    }
+
+    @Override
+    public Resources getResources(){
+        return baseContext.getResources();
+    }
 
     public boolean isOpen () {
         return this.open;

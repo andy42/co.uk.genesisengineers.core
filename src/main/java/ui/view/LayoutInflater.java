@@ -13,6 +13,7 @@ import ui.util.Xml;
 import util.FileLoader;
 import util.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.reflect.Constructor;
@@ -29,19 +30,23 @@ public class LayoutInflater {
 
     final Object[] mConstructorArgs = new Object[2];
 
-    public View inflate (String fileName, ViewGroup root) {
+    public View inflate (Context context, int layoutId, ViewGroup root) {
+        return inflate(context.getResources().getAssetFile(layoutId), root);
+    }
+
+    public View inflate (File file, ViewGroup root) {
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             XmlPullParser xpp = factory.newPullParser();
-            String fileString = FileLoader.loadFileAsString("layouts/" + fileName);
+            String fileString = FileLoader.loadFileAsString(file);
             if (fileString == null) {
-                Logger.error("LayoutInflater.inflate fileName:" + fileName + " not found");
+                Logger.error("LayoutInflater.inflate fileName:" + file.getName() + " not found");
                 return null;
             }
 
             if (fileString.isEmpty()) {
-                Logger.error("LayoutInflater.inflate fileName:" + fileName + " is empty");
+                Logger.error("LayoutInflater.inflate fileName:" + file.getName() + " is empty");
                 return null;
             }
 

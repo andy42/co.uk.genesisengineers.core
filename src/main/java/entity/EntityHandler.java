@@ -2,6 +2,7 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class EntityHandler implements Iterable<Entity> {
@@ -21,6 +22,20 @@ public class EntityHandler implements Iterable<Entity> {
         Entity entity = new Entity(index++);
         entityList.add(entity);
         return entity;
+    }
+
+    public void addEntity(Entity entity){
+        if(entity == null) return;
+        entity.setId(index++);
+        entityList.add(entity);
+    }
+
+    public void addEntities(List<Entity> entities){
+        if(entities == null) return;
+        for(Entity entity : entities){
+            entity.setId(index++);
+            entityList.add(entity);
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package entity.component.types;
 
+import content.entityPrototypeFactory.ComponentAttributes;
 import entity.component.ComponentBase;
 import util.Vector2Df;
 
@@ -20,9 +21,29 @@ public class Position extends ComponentBase {
         this.rotation = rotation;
     }
 
+    public Position (Vector2Df coordinates, float rotation) {
+        this();
+        this.coordinates = coordinates;
+        this.rotation = rotation;
+    }
+
     public Position (float rotation) {
         this();
         this.rotation = rotation;
+    }
+
+    public Position (ComponentAttributes componentAttributes) {
+        this();
+        this.coordinates = componentAttributes.getVector2Df("coordinates", coordinates);
+        this.rotation = componentAttributes.getFloat("rotation", 0f);
+    }
+
+    @Override
+    public ComponentBase clone() {
+        return new Position(
+                coordinates.copy(),
+                rotation
+        );
     }
 
     public Position () {

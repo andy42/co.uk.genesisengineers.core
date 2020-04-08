@@ -1,6 +1,8 @@
 package entity.component;
 
-public abstract class ComponentBase {
+import content.entityPrototypeFactory.ComponentAttributes;
+
+public abstract class ComponentBase{
 
     public enum Type {
         POSITION,
@@ -9,12 +11,21 @@ public abstract class ComponentBase {
         KEYBOARD_CONTROLLER,
         COLLISION,
         MAP_SQUARE,
-        BASIC_TEXTURED_SQUARE
+        BASIC_TEXTURED_SQUARE,
+        SELECT
     }
 
     protected Type type;
 
     public Type getType () {
         return type;
+    }
+
+    abstract public ComponentBase clone();
+
+    public ComponentBase(){}
+    public ComponentBase(ComponentAttributes componentAttributes) throws NoSuchMethodException{
+        System.out.println( this.getClass().getName() ) ;
+        this.getClass(). getConstructor (ComponentAttributes.class ) ;
     }
 }

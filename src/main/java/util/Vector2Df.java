@@ -90,6 +90,10 @@ public class Vector2Df implements Cloneable{
         return super.clone();
     }
 
+    public Vector2Df copy(){
+        return new Vector2Df(this);
+    }
+
     public String toString(){
         return "x:"+this.x+", y:"+this.y;
     }

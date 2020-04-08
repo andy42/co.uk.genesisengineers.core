@@ -16,13 +16,16 @@ public class FileLoader {
         ClassLoader classLoader = FileLoader.class.getClassLoader();
         //Logger.info("fileloader "+classLoader.getResource(filePath).toString());
         File file = new File(classLoader.getResource(filePath).getFile());
+        return loadFileAsString(file);
+    }
+
+    public static String loadFileAsString (File file) {
         try {
             return FileUtils.readFileToString(file);
         } catch (Exception e) {
             Logger.error("loadFileAsString Exception " + e.getMessage());
             return null;
         }
-
     }
 
     public static List<File> listFiles(String filePath){

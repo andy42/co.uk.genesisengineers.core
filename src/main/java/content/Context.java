@@ -8,14 +8,9 @@ public class Context {
     private Resources resources = null;
 
     public Resources getResources(){
-
-        //Logger.info("getResource getPath "+Context.class.getClassLoader().getResource("test.txt").getPath());
-        //Logger.info("getPackage "+this.getClass().getResource());
-
-
-
         if(resources == null){
             resources = new Resources();
+            resources.init();
         }
 
         return resources;
