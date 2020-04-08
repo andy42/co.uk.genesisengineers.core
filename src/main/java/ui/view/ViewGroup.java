@@ -142,9 +142,9 @@ public abstract class ViewGroup extends View {
         public final static int WRAP_CONTENT = -3;
     }
 
-    public View findViewById(String id){
+    public View findViewById(int id){
         for(View view : children){
-            if(view.getId().equalsIgnoreCase(id)){
+            if(view.getId() == id){
                 return view;
             }
 

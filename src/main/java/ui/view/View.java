@@ -14,7 +14,7 @@ import visualisation.Visualisation;
 import static org.lwjgl.opengl.GL11.*;
 
 public class View {
-    protected String id = "";
+    protected int id = -1;
     protected Vector2Df dimensions = new Vector2Df(0, 0);
     protected Vector2Df position = new Vector2Df(0, 0);
     protected Vec3f backgroundColor = null;
@@ -51,7 +51,7 @@ public class View {
     Context context;
 
     public View (Context context, AttributeSet attrs) {
-        this.id = AttributeParser.getString(attrs, "id");
+        this.id = AttributeParser.getInteger(attrs, "id", -1);
 
         this.backgroundColor = AttributeParser.getColor(attrs, "background_color", null);
         this.backgroundPressedColor = AttributeParser.getColor(attrs, "background_pressed_color", null);
@@ -74,14 +74,14 @@ public class View {
         this.context = context;
     }
 
-    public View findViewById(String id){
+    public View findViewById(int id){
         return null;
     }
 
     public View () {
     }
 
-    public String getId () {
+    public Integer getId () {
         return id;
     }
 

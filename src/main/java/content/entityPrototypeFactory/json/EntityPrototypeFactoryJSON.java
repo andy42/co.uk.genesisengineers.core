@@ -40,7 +40,7 @@ public class EntityPrototypeFactoryJSON extends EntityPrototypeFactory {
         JSONArray componentJSONArray = entityJson.getJSONArray("components");
 
         Entity  entity = new Entity(idIndex++);
-        for(int i=0; i <componentJSONArray.length(); i++ ){
+        for(int i=0; i < componentJSONArray.length(); i++ ){
             ComponentBase component = createComponent(componentJSONArray.getJSONObject(i));
             if(component == null) continue;
             entity.addComponent(component);

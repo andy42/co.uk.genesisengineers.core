@@ -85,6 +85,14 @@ public class AttributeParser {
         return getString(attrs, key, "");
     }
 
+    public static Integer getInteger (AttributeSet attrs, String key, Integer defaultValue) {
+        try {
+            return Integer.parseInt( attrs.getAttributeValue(null, key));
+        } catch (Exception e){
+            return defaultValue;
+        }
+    }
+
     public static boolean getBoolean(AttributeSet attrs, String key, boolean defaultValue){
         String value = attrs.getAttributeValue(null, key);
         if(value == null){
