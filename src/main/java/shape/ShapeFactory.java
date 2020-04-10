@@ -1,4 +1,4 @@
-package drawable.shape;
+package shape;
 
 import content.Context;
 

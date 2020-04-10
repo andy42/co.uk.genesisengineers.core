@@ -1,4 +1,4 @@
-package drawable.shape;
+package shape;
 
 import visualisation.Visualisation;
 
@@ -10,10 +10,15 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Shape {
 
+    public static final int DRAW_TYPE_FAN = GL_TRIANGLE_FAN;
+    public static final int DRAW_TYPE_STRIP = GL_TRIANGLE_STRIP;
+
     private int verticesCount;
     private FloatBuffer vertexBuffer; // to hold the vertices
+    private int drawType; // ie GL_TRIANGLE_STRIP
 
-    public Shape(float vertices[]){
+
+    public Shape(float vertices[], int drawType){
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
         byteBuffer.order(ByteOrder.nativeOrder());
 
@@ -23,6 +28,8 @@ public class Shape {
         this.vertexBuffer = byteBuffer.asFloatBuffer();
         this.vertexBuffer.put(vertices);
         this.vertexBuffer.position(0);
+
+        this.drawType= drawType;
     }
 
     public void preDraw(Visualisation visualisation){
@@ -33,7 +40,7 @@ public class Shape {
     }
 
     public void draw(Visualisation visualisation){
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, verticesCount / 3);
+        glDrawArrays(drawType, 0, verticesCount / 3);
     }
 
     public void postDraw(Visualisation visualisation){

@@ -1,20 +1,35 @@
 package drawable;
 
-import com.sun.javafx.geom.Vec3f;
-import drawable.shape.Shape;
-import drawable.shape.ShapeManager;
+import content.Asset;
+import content.Context;
+import drawable.json.DrawableFactoryJson;
+import shape.Shape;
+import shape.ShapeManager;
 import util.Vector2Df;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DrawableManager {
 
+    private DrawableFactoryJson drawableFactoryJson;
+
+    public DrawableManager(ShapeManager shapeManager){
+        drawableFactoryJson = new DrawableFactoryJson(shapeManager);
+    }
+
     private Map<Integer, Drawable> drawableMap = new HashMap<>();
 
-    public void load(ShapeManager shapeManager){
-//        Drawable newDrawable = new DrawableColor(new Vec3f(0,0,1), shapeManager.getShape(R.s));
-//        addDrawable(0, newDrawable);
+    public void load(Context context, List<Asset> assets){
+
+        for(Asset asset : assets){
+            switch (asset.fileType){
+                case "json":
+                    Drawable drawable =  drawableFactoryJson.loadRes(context, asset.id);
+                    addDrawable(asset.id, drawable);
+            }
+        }
     }
 
     public void addDrawable(int drawableId, Drawable drawable){

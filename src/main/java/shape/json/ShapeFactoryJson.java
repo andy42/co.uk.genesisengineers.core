@@ -1,22 +1,18 @@
-package drawable.shape.json;
+package shape.json;
 
 import content.Context;
-import drawable.shape.Shape;
-import drawable.shape.ShapeFactory;
+import shape.Shape;
+import shape.ShapeFactory;
 import org.json.JSONObject;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 import util.FileLoader;
-import util.Logger;
 
 import java.io.File;
-import java.io.StringReader;
 
 public class ShapeFactoryJson implements ShapeFactory {
 
     private static final String VERTICES_KEY = "vertices";
     private static final String DIMENSIONS_KEY = "dimensions";
+    private static final String DRAW_TYPE_KEY = "drawType";
 
     @Override
     public Shape loadRes(Context context, int resId) {
@@ -31,6 +27,18 @@ public class ShapeFactoryJson implements ShapeFactory {
 
     private Shape loadRes(JSONObject jsonObject) {
         String verticesString = jsonObject.getString(VERTICES_KEY);
+        int drawType;
+        switch (jsonObject.getString(DRAW_TYPE_KEY)){
+            case "strip":
+                drawType = Shape.DRAW_TYPE_STRIP;
+                break;
+            case "fan":
+                drawType = Shape.DRAW_TYPE_FAN;
+                break;
+            default:
+                drawType = Shape.DRAW_TYPE_STRIP;
+        }
+
         String[] verticesStringArray = verticesString.split(",");
 
         float[] verticesFloatArray = new float[verticesStringArray.length];
@@ -39,7 +47,7 @@ public class ShapeFactoryJson implements ShapeFactory {
             for(int i=0; i < verticesStringArray.length; i++){
                 verticesFloatArray[i] = Float.parseFloat(verticesStringArray[i]);
             }
-            return new Shape(verticesFloatArray);
+            return new Shape(verticesFloatArray, drawType);
         }
         catch (NumberFormatException e){
             return null;

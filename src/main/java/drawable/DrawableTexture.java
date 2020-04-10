@@ -1,6 +1,6 @@
 package drawable;
 
-import drawable.shape.Shape;
+import shape.Shape;
 import util.Vector2Df;
 import visualisation.TextureRegion;
 import visualisation.Visualisation;
