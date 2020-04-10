@@ -15,7 +15,6 @@ public class ComponentFactory {
     private static final Class<?>[] mConstructorSignature = new Class[]{ComponentAttributes.class};
     private final Object[] mConstructorArgs = new Object[1];
 
-
     private boolean verifyClassLoader (Constructor<? extends ComponentBase> constructor) {
         final ClassLoader constructorLoader = constructor.getDeclaringClass().getClassLoader();
         ClassLoader cl = getClass().getClassLoader();
@@ -51,16 +50,7 @@ public class ComponentFactory {
             final ComponentBase instance = constructor.newInstance(args);
             return instance;
 
-        } catch (ClassNotFoundException e) {
-            // If loadClass fails, we should propagate the exception.
-            Logger.exception(e, e.getMessage());
-        } catch (NoSuchMethodException e) {
-            Logger.exception(e, e.getMessage());
-        } catch (IllegalAccessException e) {
-            Logger.exception(e, e.getMessage());
-        } catch (InstantiationException e) {
-            Logger.exception(e, e.getMessage());
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             Logger.exception(e, e.getMessage());
         }
         return null;
