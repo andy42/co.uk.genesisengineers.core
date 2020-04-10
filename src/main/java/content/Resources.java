@@ -3,6 +3,8 @@ package content;
 import util.ResourceLoader;
 
 import java.io.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Resources {
 
@@ -41,5 +43,14 @@ public class Resources {
     }
     public String getAssetFilePath(int assetId){
         return assetsMap.getFilePath(assetId);
+    }
+
+    public List<Integer>  getAssetIdsOfType(int typeId){
+        return assetsMap.getAssetsOfType(typeId).stream().
+                collect(Collectors.mapping(Asset::getId, Collectors.toList()));
+    }
+
+    public List<Asset>  getAssetsOfType(int typeId){
+        return assetsMap.getAssetsOfType(typeId);
     }
 }

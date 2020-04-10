@@ -1,13 +1,10 @@
 package content;
 
-import com.esotericsoftware.jsonbeans.Json;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import util.Logger;
 import util.ResourceLoader;
 
-import java.io.File;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +49,16 @@ public class AssetsMap {
 
     public Asset getAsset(int assetId){
         return assetMap.get(assetId);
+    }
+
+    public List<Asset> getAssetsOfType(int typeId){
+        List<Asset> assets = new ArrayList<Asset>();
+        for(Asset asset : assetMap.values()){
+            if(asset.type == typeId){
+                assets.add(asset);
+            }
+        }
+        return assets;
     }
 
     public String getFilePath(int assetId){
