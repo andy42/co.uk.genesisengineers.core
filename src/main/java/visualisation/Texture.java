@@ -1,5 +1,6 @@
 package visualisation;
 
+import content.Context;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -40,9 +41,15 @@ public class Texture {
     }
 
     public TextureRegion addTextureRegion (Vector2Df position, Vector2Df dimensions) {
-        TextureRegion textureRegion = new TextureRegion(this, position, dimensions);
-        this.regionList.add(textureRegion);
-        return textureRegion;
+        try {
+            TextureRegion textureRegion = new TextureRegion(this, position, dimensions);
+            this.regionList.add(textureRegion);
+            return textureRegion;
+        }
+        catch (Exception e){
+            Logger.exception(new Exception(e), e.getMessage());
+            return null;
+        }
     }
 
     public TextureRegion getTextureRegion (int index) {
@@ -94,17 +101,17 @@ public class Texture {
         GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
     }
 
-    public boolean init (String filename) {
-        if (load(filename) == false) {
+    public boolean initPng (Context context, int resId) {
+        if (loadPng(context, resId) == false) {
             return false;
         }
         initGl();
         return true;
     }
 
-    private boolean load (String filename) {
+    private boolean loadPng (Context context, int resId) {
         try {
-            File file = new File(getClass().getClassLoader().getResource(filename).toURI());
+            File file =context.getResources().getAssetFile(resId);
 
             InputStream inputStream = new FileInputStream(file);
 
@@ -124,13 +131,10 @@ public class Texture {
 
             inputStream.close();
         } catch (FileNotFoundException e) {
-            Logger.exception(e, "Texture %s not found.", filename);
+            Logger.exception(e, "Texture %s not found.", resId);
             return false;
         } catch (IOException e) {
             Logger.exception(e, "Texture failed to load, couldn't read or write to stream.");
-            return false;
-        } catch (URISyntaxException e) {
-            Logger.exception(e, "The resource you're trying to specify is incorrectly formatted");
             return false;
         }
 

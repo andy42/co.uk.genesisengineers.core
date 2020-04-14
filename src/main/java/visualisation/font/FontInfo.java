@@ -89,12 +89,12 @@ public class FontInfo {
     }
 
 
-    public boolean init (String fileName) {
+    public boolean init (File file) {
 
         BufferedReader reader = null;
 
         try {
-            reader = new BufferedReader(new InputStreamReader(ResourceLoader.getStream(fileName), "UTF-8"));
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 
             loadPaddingData(reader);
             loadLineSizes(reader);

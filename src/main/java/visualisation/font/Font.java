@@ -1,38 +1,18 @@
 package visualisation.font;
 
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.awt.FontFormatException;
 import java.io.*;
-import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import com.sun.javafx.geom.Vec3f;
-import org.apache.commons.io.IOUtils;
-import org.lwjgl.BufferUtils;
+import content.Context;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.stb.STBTTAlignedQuad;
-import org.lwjgl.stb.STBTTBakedChar;
-import org.lwjgl.stb.STBTruetype;
-import org.lwjgl.system.MemoryUtil;
 import util.Logger;
-import util.ResourceLoader;
 import util.Vector2Df;
 import visualisation.Texture;
 import visualisation.TextureRegion;
 import visualisation.Visualisation;
-
-import static java.awt.Font.MONOSPACED;
-import static java.awt.Font.PLAIN;
-import static java.awt.Font.TRUETYPE_FONT;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 
@@ -49,7 +29,7 @@ public class Font {
     public Font () {
     }
 
-    private void createCharTextureRegion (CharacterInfo characterInfo) {
+    private void createCharTextureRegion (CharacterInfo characterInfo) throws Exception {
         Vector2Df position = new Vector2Df(characterInfo.getX() + fontInfo.getPaddingLeft(), characterInfo.getY() + fontInfo.getPaddingTop());
 
         Vector2Df dimensions = new Vector2Df(characterInfo.getWidth() - fontInfo.getPaddingWidth(), characterInfo.getHeight() - fontInfo.getPaddingHeight());
@@ -65,15 +45,17 @@ public class Font {
         this.characters.put(characterInfo.getId(), character);
     }
 
+    public boolean init (Context context, int fontTextureAssetId, int fontInfoAssetId) {
 
-    //filename is the file path of the font without file extension
-    public boolean init (String filename) {
-        if (fontInfo.init(filename + ".fnt") == false) {
+
+        File fontInfoFile = context.getResources().getAssetFile(fontInfoAssetId);
+
+        if (fontInfo.init(fontInfoFile) == false) {
             return false;
         }
 
         this.texture = new Texture();
-        if (texture.init(filename + ".png") == false) {
+        if (texture.initPng(context, fontTextureAssetId) == false) {
             return false;
         }
 
@@ -83,7 +65,13 @@ public class Font {
             if (characterInfo == null) {
                 continue;
             }
-            createCharTextureRegion(characterInfo);
+            try{
+                createCharTextureRegion(characterInfo);
+            }
+            catch (Exception e){
+                Logger.exception(e,e.getMessage());
+                return false;
+            }
             createChar(characterInfo);
         }
         return true;

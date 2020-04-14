@@ -6,6 +6,7 @@ public abstract class SystemBase {
     public enum Type {
         RENDER_TEXTURE,
         RENDER_COLOUR,
+        RENDER_DRAWABLE,
         MOVEMENT,
         KEYBOARD_CONTROLLER,
         COLLISION,

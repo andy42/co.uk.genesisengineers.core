@@ -98,11 +98,15 @@ public class Visualisation {
         this.initShaders();
     }
 
-    public void loadFonts () {
-        //font = new visualisation.font.Font("fonts/brandon_bld_it-webfont.ttf", 12);
-
-        font.init("fonts/arial");
+    public void loadFont(Context context, int fontTextureAssetId, int fontInfoAssetId){
+        font.init(context, fontTextureAssetId, fontInfoAssetId);
     }
+
+//    public void loadFonts () {
+//        //font = new visualisation.font.Font("fonts/brandon_bld_it-webfont.ttf", 12);
+//
+//        font.init("fonts/arial");
+//    }
 
     private boolean fontLoading () {
         //Font awtFont = new Font(Font.MONOSPACED, Font.BOLD, 24);

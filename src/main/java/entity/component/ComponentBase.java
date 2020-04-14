@@ -7,6 +7,7 @@ public abstract class ComponentBase{
     public enum Type {
         POSITION,
         BASIC_COLOURED_SQUARE,
+        BASIC_DRAWABLE,
         MOVEMENT,
         KEYBOARD_CONTROLLER,
         COLLISION,

@@ -37,7 +37,7 @@ public class TextureRegion {
     }
 
 
-    public TextureRegion (Texture texture, Vector2Df position, Vector2Df dimensions) {
+    public TextureRegion (Texture texture, Vector2Df position, Vector2Df dimensions) throws Exception {
         this.textureId = texture.getTextureId();
         generateTextureCoordBuffer(texture, position, dimensions);
         this.dimensions = dimensions;
@@ -48,19 +48,17 @@ public class TextureRegion {
     //Vector2Df position : postion in pixels of the region in the texture
     //int width : the width of the region in pixels
     //int height : the height of the region in pixels
-    private void generateTextureCoordBuffer (Texture texture, Vector2Df position, Vector2Df dimensions) {
+    private void generateTextureCoordBuffer (Texture texture, Vector2Df position, Vector2Df dimensions) throws Exception {
         float textureWidth = texture.getWidth();
         float textureHeight = texture.getHeight();
         //Logger.info("textureWidth =" + textureWidth + ", textureHeight = " + textureHeight);
 
         if (textureWidth == 0 || textureHeight == 0) {
-            Logger.error("generateTextureCoordBuffer textureWidth or textureHeight == 0");
-            return;
+            throw new Exception("generateTextureCoordBuffer textureWidth or textureHeight == 0");
         }
 
         if ((position.x + dimensions.x) > textureWidth || (position.y + dimensions.y) > textureHeight) {
-            Logger.error("generateTextureCoordBuffer Region out side of texture");
-            return;
+            throw new Exception("generateTextureCoordBuffer Region out side of texture");
         }
 
         float left = position.x / textureWidth;

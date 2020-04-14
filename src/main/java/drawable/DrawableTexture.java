@@ -2,6 +2,7 @@ package drawable;
 
 import shape.Shape;
 import util.Vector2Df;
+import visualisation.Texture;
 import visualisation.TextureRegion;
 import visualisation.Visualisation;
 
@@ -9,10 +10,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class DrawableTexture implements Drawable {
 
+    private Texture texture;
     private TextureRegion textureRegion;
     private Shape shape;
 
-    public DrawableTexture(TextureRegion textureRegion, Shape shape){
+    public DrawableTexture(Texture texture, TextureRegion textureRegion, Shape shape){
+        this.texture = texture;
         this.textureRegion = textureRegion;
         this.shape = shape;
     }
@@ -20,7 +23,7 @@ public class DrawableTexture implements Drawable {
     @Override
     public void draw(Vector2Df coordinates, Vector2Df dimensions, float rotation) {
         Visualisation visualisation = Visualisation.getInstance();
-        visualisation.useColourProgram();
+        visualisation.useTextureProgram();
 
         shape.preDraw(visualisation);
 
