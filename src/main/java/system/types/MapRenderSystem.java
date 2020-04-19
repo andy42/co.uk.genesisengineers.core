@@ -42,9 +42,11 @@ public class MapRenderSystem extends SystemBase {
                 mapTile = mapSquare.getMapTile(x, y);
                 if (mapTile == null)
                     continue;
+                if(mapTile.drawableArray == null)
+                    continue;
 
                 tilePosition = mapSquare.getTileDimensions().multiply(new Vector2Df(x, y)).add(mapPosition);
-                visualisation.drawTexturedSquare(mapTile.textureId, mapTile.textureRegionIndex, tilePosition, mapSquare.getTileDimensions(), 0);
+                mapTile.drawableArray.draw(tilePosition, mapSquare.getTileDimensions(), 0, mapTile.drawableIndex);
             }
         }
     }

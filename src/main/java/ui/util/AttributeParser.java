@@ -1,6 +1,8 @@
 package ui.util;
 
 import com.sun.javafx.geom.Vec3f;
+import content.Context;
+import content.colors.Color;
 import ui.view.ViewGroup;
 import util.Logger;
 
@@ -45,20 +47,27 @@ public class AttributeParser {
     }
 
 
-    public static Vec3f getColor (AttributeSet attrs, String key, String defaultValue) {
+    public static Vec3f getColor (Context context, AttributeSet attrs, String key, String defaultValue) {
         String value = attrs.getAttributeValue(null, key);
-        if (value == null) {
-            if(defaultValue == null){
-                return null;
-            } else {
-                return colorFromString(defaultValue);
+
+        if(value != null  && value.length() > 0 && value.charAt(0) == '#'){
+            return colorFromString(value);
+        }
+        else if(value != null ) {
+            Color color = context.getResources().getColor(Integer.parseInt(value));
+            if (color != null) {
+                return colorFromString(context.getResources().getColor(Integer.parseInt(value)).hexValue);
             }
         }
-        return colorFromString(value);
+
+        if ( defaultValue != null) {
+            return colorFromString(defaultValue);
+        }
+        return null;
     }
 
-    public static Vec3f getColor (AttributeSet attrs, String key) {
-        return getColor(attrs, key, "#000000");
+    public static Vec3f getColor (Context context,AttributeSet attrs, String key) {
+        return getColor(context, attrs, key, "#000000");
     }
 
     public static Vec3f colorFromString (String value) {

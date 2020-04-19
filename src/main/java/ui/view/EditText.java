@@ -11,6 +11,5 @@ public class EditText extends TextView {
         super(context, attrs);
         this.isFocusable= AttributeParser.getBoolean(attrs, "focusable", true);
         this.isEditable = AttributeParser.getBoolean(attrs, "editable", true);
-        this.backgroundFocusedColor = AttributeParser.getColor(attrs, "background_focused_color", "#ffffff");
     }
 }

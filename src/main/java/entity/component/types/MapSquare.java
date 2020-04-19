@@ -1,6 +1,8 @@
 package entity.component.types;
 
 import content.entityPrototypeFactory.ComponentAttributes;
+import drawable.DrawableArray;
+import drawable.DrawableManager;
 import entity.component.ComponentBase;
 import util.Vector2Df;
 
@@ -10,6 +12,7 @@ public class MapSquare extends ComponentBase {
 
     private Vector2Df boardDimensions = new Vector2Df(1, 1);
     private Vector2Df tileDimensions = new Vector2Df(1, 1);
+    private DrawableArray drawableArray;
 
     private ArrayList<MapTile> mapArray = new ArrayList<>();
 
@@ -29,21 +32,36 @@ public class MapSquare extends ComponentBase {
         return this.tileDimensions.multiply(new Vector2Df(0.5f, 0.5f));
     }
 
-    public MapSquare (Vector2Df boardDimensions, Vector2Df tileDimensions) {
+    public MapSquare (DrawableArray drawableArray, Vector2Df boardDimensions, Vector2Df tileDimensions) {
         this();
 
         this.boardDimensions = boardDimensions;
         this.tileDimensions = tileDimensions;
+        this.drawableArray = drawableArray;
 
         int tileCount = (int) (boardDimensions.x * boardDimensions.y);
         for (int i = 0; i < tileCount; i++) {
-            //TODO these are temp values, will us passed defaults or entire map tile values
-            mapArray.add(new MapTile(1, 3));
+            mapArray.add(new MapTile(drawableArray, 0));
+        }
+    }
+
+    public MapSquare (int drawableArrayId, Vector2Df boardDimensions, Vector2Df tileDimensions) {
+        this();
+        DrawableArray drawableArray = (DrawableArray)DrawableManager.getInstance().getDrawable(drawableArrayId);
+
+        this.boardDimensions = boardDimensions;
+        this.tileDimensions = tileDimensions;
+        this.drawableArray = drawableArray;
+
+        int tileCount = (int) (boardDimensions.x * boardDimensions.y);
+        for (int i = 0; i < tileCount; i++) {
+            mapArray.add(new MapTile(drawableArray, 0));
         }
     }
 
     public MapSquare (ComponentAttributes componentAttributes) {
         this(
+                componentAttributes.getIntValue("drawableArrayId", -1),
                 componentAttributes.getVector2Df("boardDimensions", new Vector2Df(1,1)),
                 componentAttributes.getVector2Df("tileDimensions", new Vector2Df(1,1))
         );
@@ -51,23 +69,23 @@ public class MapSquare extends ComponentBase {
 
     @Override
     public ComponentBase clone() {
-        return new MapSquare(boardDimensions.copy(),tileDimensions.copy());
+        return new MapSquare(drawableArray, boardDimensions.copy(),tileDimensions.copy());
     }
 
-    public void setAllTileTextures (int textureId, int textureRegionIndex) {
+    public void setAllTileTextures (DrawableArray drawableArray, int drawableIndex) {
         for (MapTile tile : mapArray) {
-            tile.textureId = textureId;
-            tile.textureRegionIndex = textureRegionIndex;
+            tile.drawableArray = drawableArray;
+            tile.drawableIndex = drawableIndex;
         }
     }
 
-    public void setTileTexture (int x, int y, int textureId, int textureRegionIndex) {
+    public void setTileTexture (int x, int y, DrawableArray drawableArray, int drawableIndex) {
         MapTile tile = getMapTile(x, y);
         if (tile == null) {
             return;
         }
-        tile.textureId = textureId;
-        tile.textureRegionIndex = textureRegionIndex;
+        tile.drawableArray = drawableArray;
+        tile.drawableIndex = drawableIndex;
     }
 
     public MapTile getMapTile (int x, int y) {
@@ -76,13 +94,12 @@ public class MapSquare extends ComponentBase {
 
     public static class MapTile {
 
+        public DrawableArray drawableArray;
+        public int drawableIndex = 0;
 
-        public int textureId = 0;
-        public int textureRegionIndex = 0;
-
-        public MapTile (int textureId, int textureRegionIndex) {
-            this.textureId = textureId;
-            this.textureRegionIndex = textureRegionIndex;
+        public MapTile (DrawableArray drawableArray, int drawableIndex) {
+            this.drawableArray = drawableArray;
+            this.drawableIndex = drawableIndex;
         }
     }
 }

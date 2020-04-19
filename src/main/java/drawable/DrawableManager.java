@@ -19,7 +19,24 @@ public class DrawableManager {
 
     private DrawableFactoryJson drawableFactoryJson;
 
-    public DrawableManager(ShapeManager shapeManager, TextureManager textureManager){
+    private static DrawableManager s_instance = null;
+
+    public static DrawableManager createInstance (ShapeManager shapeManager, TextureManager textureManager) {
+        if (s_instance == null) {
+            s_instance = new DrawableManager(shapeManager,textureManager);
+        }
+        return s_instance;
+    }
+
+    public static DrawableManager getInstance () {
+        if (s_instance == null) {
+            throw new RuntimeException("DrawableManager getInstance called without calling createInstance");
+        }
+        return s_instance;
+    }
+
+
+    private DrawableManager(ShapeManager shapeManager, TextureManager textureManager){
         drawableFactoryJson = new DrawableFactoryJson(shapeManager,textureManager );
     }
 
@@ -45,7 +62,7 @@ public class DrawableManager {
         drawableMap.put(drawableId, drawable);
     }
 
-    public Drawable getDrawable(int drawableId){
+    public Drawable getDrawable(Integer drawableId){
         return drawableMap.get(drawableId);
     }
 
