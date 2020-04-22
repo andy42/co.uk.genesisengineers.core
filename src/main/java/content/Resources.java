@@ -62,6 +62,9 @@ public class Resources {
     public Asset  getAsset(int id){
         return assetsMap.getAsset(id);
     }
+    public int getAssetId(String assetId){
+        return assetsMap.getAssetId(assetId);
+    }
 
     public void loadColors(Context context, int assetId){
         colors.loadRes(context, assetId);

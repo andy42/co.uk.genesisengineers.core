@@ -67,6 +67,15 @@ public class AssetsMap {
         return asset.filePath;
     }
 
+    public int getAssetId(String assetId){
+        for(Asset asset : assetMap.values()){
+            if(asset.assetId.compareTo(assetId) == 0){
+                return asset.id;
+            }
+        }
+        return -1;
+    }
+
     public void log(){
         for (Map.Entry<Integer,Asset> entry : assetMap.entrySet()){
             Logger.info(entry.getValue().name);

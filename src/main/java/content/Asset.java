@@ -5,6 +5,7 @@ import org.json.JSONObject;
 public class Asset {
     public String name;
     public int id;
+    public String assetId;
     public String filePath;
     public String fileType;
     public int type;
@@ -12,6 +13,7 @@ public class Asset {
     public Asset(JSONObject jsonObject){
         name = jsonObject.getString("name");
         id = jsonObject.getInt("id");
+        assetId = jsonObject.getString("assetId");
         filePath = jsonObject.getString("filePath");
         type = jsonObject.getInt("type");
         fileType = jsonObject.getString("fileType");
