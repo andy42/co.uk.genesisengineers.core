@@ -2,7 +2,6 @@ package network;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
-import entity.component.types.Movement;
 import util.Vector2Df;
 
 public class Network {
@@ -15,9 +14,7 @@ public class Network {
         kryo.register(LoginMessage.class);
         kryo.register(Register.class);
         kryo.register(NewEntity.class);
-        kryo.register(MovementMessage.class);
         kryo.register(Vector2Df.class);
-        kryo.register(Movement.class);
     }
 
     static public class StringMessage implements NetworkMessage {
@@ -43,11 +40,6 @@ public class Network {
     static public class NewEntity implements NetworkMessage {
         public int entityId;
         public int protoTypeId;
-    }
-
-    static public class MovementMessage implements NetworkMessage {
-        public int entityId;
-        public Movement movement;
     }
 
     public interface NetworkMessage {

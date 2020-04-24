@@ -1,7 +1,8 @@
 package ui.view;
 
-import com.sun.javafx.geom.Vec3f;
 import content.Context;
+import drawable.Drawable;
+import drawable.DrawableManager;
 import input.KeyEvent;
 import ui.util.AttributeParser;
 import ui.util.AttributeSet;
@@ -9,17 +10,14 @@ import input.MotionEvent;
 import util.CollisionBox;
 import util.Logger;
 import util.Vector2Df;
-import visualisation.Visualisation;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class View {
     protected int id = -1;
     protected Vector2Df dimensions = new Vector2Df(0, 0);
     protected Vector2Df position = new Vector2Df(0, 0);
-    protected Vec3f backgroundColor = null;
-    protected Vec3f backgroundFocusedColor = null;
-    protected Vec3f backgroundPressedColor = null;
+    protected Drawable background = null;
+    protected Drawable backgroundFocused = null;
+    protected Drawable backgroundPressed = null;
     protected ViewGroup.LayoutParams layoutParams;
     protected int measuredWidth = 0;
     protected int measuredHeight = 0;
@@ -53,9 +51,12 @@ public class View {
     public View (Context context, AttributeSet attrs) {
         this.id = AttributeParser.getInteger(attrs, "id", -1);
 
-        this.backgroundColor = AttributeParser.getColor(attrs, "background_color", null);
-        this.backgroundPressedColor = AttributeParser.getColor(attrs, "background_pressed_color", null);
-        this.backgroundFocusedColor = AttributeParser.getColor(attrs, "background_focused_color", null);
+        this.background = DrawableManager.getInstance().getDrawable(
+                AttributeParser.getInteger(attrs, "background", null));
+        this.backgroundPressed = DrawableManager.getInstance().getDrawable(
+                AttributeParser.getInteger(attrs, "background_pressed", null));
+        this.backgroundFocused =DrawableManager.getInstance().getDrawable(
+                AttributeParser.getInteger(attrs, "background_focused", null));
 
 
         this.topMargin = AttributeParser.getDimension(attrs, "margin_top", 0);
@@ -101,12 +102,12 @@ public class View {
         this.position = position;
     }
 
-    public Vec3f getBackgroundColor () {
-        return this.backgroundColor;
+    public Drawable getBackground () {
+        return this.background;
     }
 
-    public void setBackgroundColor (Vec3f backgroundColor) {
-        this.backgroundColor = backgroundColor;
+    public void setBackground (Drawable background) {
+        this.background = background;
     }
 
     public void setLayoutParams (ViewGroup.LayoutParams layoutParams) {
@@ -158,28 +159,16 @@ public class View {
     }
 
     public void renderBackgound(){
-        Visualisation visualisation = Visualisation.getInstance();
 
-        //Logger.debug("View render");
-
-        visualisation.useColourProgram();
-        glPushMatrix();
-        glTranslatef(position.x, position.y, 0);
-        glScalef(dimensions.x, dimensions.y, 0);
-
-        //Logger.info("test backgroundPressedColor "+this.backgroundPressedColor);
-
-        if(this.backgroundPressedColor != null && this.isPressed){
-            visualisation.drawColouredSquareTopLeft(this.backgroundPressedColor);
+        if(this.backgroundPressed != null && this.isPressed){
+            this.backgroundPressed.draw(position, dimensions, 0);
         }
-        else if(this.backgroundFocusedColor != null && this.isFocused ){
-            visualisation.drawColouredSquareTopLeft(this.backgroundFocusedColor);
+        else if(this.backgroundFocused != null && this.isFocused ){
+            this.backgroundFocused.draw(position, dimensions, 0);
         }
-        else if (backgroundColor != null) {
-            visualisation.drawColouredSquareTopLeft(this.backgroundColor);
+        else if (background != null) {
+            background.draw(position, dimensions, 0);
         }
-
-        glPopMatrix();
     }
 
     public void render () {

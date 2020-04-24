@@ -31,6 +31,7 @@ public class LayoutInflater {
     final Object[] mConstructorArgs = new Object[2];
 
     public View inflate (Context context, int layoutId, ViewGroup root) {
+        mContext= context;
         return inflate(context.getResources().getAssetFile(layoutId), root);
     }
 

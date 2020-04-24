@@ -25,10 +25,10 @@ public class TextView extends View {
 
         this.text = AttributeParser.getString(attrs, "text", "");
         this.textSize = AttributeParser.getDimension(attrs, "text_size", 10) * textModifier;
-        this.textColor = AttributeParser.getColor(attrs, "text_color", "#000000");
+        this.textColor = AttributeParser.getColor(context, attrs, "text_color", "#000000");
 
         this.hintText = AttributeParser.getString(attrs, "hint_text", "");
-        this.hintTextColor = AttributeParser.getColor(attrs, "hint_text_color", "#000000");
+        this.hintTextColor = AttributeParser.getColor(context, attrs, "hint_text_color", "#000000");
         this.hintTextSize = AttributeParser.getDimension(attrs, "hint_text_size", 10) * textModifier;
 
         this.isEditable = AttributeParser.getBoolean(attrs, "editable", false);

@@ -1,12 +1,18 @@
 package visualisation;
 
+import content.Asset;
+import content.Context;
+import drawable.Drawable;
 import util.Logger;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 public class TextureManager {
 
-    private Vector<Texture> textureList = new Vector<>();
+    private Map<Integer, Texture> textureMap = new HashMap<>();
     private Texture activeTexture = new Texture();
 
     private static TextureManager s_instance = null;
@@ -21,43 +27,53 @@ public class TextureManager {
     private TextureManager () {
     }
 
-    public Texture addTexture (String fileName) {
+    public void load(Context context, List<Asset> assets){
+        for(Asset asset : assets){
+            switch (asset.fileType){
+                case "png":
+                    addPngTexture(context, asset);
+                    break;
+                default:
+                    Logger.error("TextureManager Asset type not supported : "+asset.name);
+            }
+        }
+    }
+
+    public Texture addPngTexture (Context context, Asset asset) {
         Texture texture = new Texture();
-        if (texture.init(fileName) == true) {
-            texture.setId(this.textureList.size());
-            this.textureList.add(texture);
+        if (texture.initPng(context, asset.id) == true) {
+            textureMap.put(asset.id, texture);
             return texture;
         }
         return null;
     }
 
-    public Texture getTexture (int index) {
-        return textureList.get(index);
+    public Texture getTexture (int resId) {
+        return textureMap.get(resId);
     }
 
     public void bind (int textureId) {
-        for (Texture texture : textureList) {
-            if (texture.getId() == textureId) {
-                texture.bind();
-                return;
-            }
+        Texture texture = textureMap.get(textureId);
+        if(texture != null){
+            texture.bind();
+        } else {
+            Logger.exception(new Exception("bindTexture Error"),"bindTexture not found, textureId : "+textureId);
         }
-        Logger.error("bindTexture not found.");
     }
 
+
     public void bind (int textureId, int textureRegionIndex) {
-        for (Texture texture : textureList) {
-            if (texture.getId() == textureId) {
-                texture.bindTextureRegion(textureRegionIndex);
-                texture.bind();
-                return;
-            }
+        Texture texture = textureMap.get(textureId);
+        if(texture != null){
+            texture.bind();
+            texture.bindTextureRegion(textureRegionIndex);
+        } else {
+            Logger.exception(new Exception("bindTexture Error"), "bindTexture not found, textureId :"+textureId+ ", textureRegionIndex : "+textureRegionIndex);
         }
-        Logger.error("bindTexture not found.");
     }
 
     public void deleteTextures () {
-        for (Texture texture : textureList) {
+        for (Texture texture : textureMap.values()) {
             texture.delete();
         }
     }

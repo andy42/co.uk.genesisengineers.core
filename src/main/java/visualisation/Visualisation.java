@@ -98,19 +98,9 @@ public class Visualisation {
         this.initShaders();
     }
 
-    public void loadFonts () {
-        //font = new visualisation.font.Font("fonts/brandon_bld_it-webfont.ttf", 12);
-
-        font.init("fonts/arial");
+    public void loadFont(Context context, int fontTextureAssetId, int fontInfoAssetId){
+        font.init(context, fontTextureAssetId, fontInfoAssetId);
     }
-
-    private boolean fontLoading () {
-        //Font awtFont = new Font(Font.MONOSPACED, Font.BOLD, 24);
-        //this.font = new TrueTypeFont(awtFont, false);
-
-        return true;
-    }
-
 
     private boolean initShaders () {
 
@@ -128,12 +118,6 @@ public class Visualisation {
             Logger.error("initShaders == false : font");
             return false;
         }
-
-
-        //        glBindAttribLocation(this.shaderProgram.getProgrammeId(), 0, "in_Position");
-        //        glBindAttribLocation(this.shaderProgram.getProgrammeId(), 1, "in_Color");
-        //        glBindAttribLocation(this.shaderProgram.getProgrammeId(), 2, "in_TextureCoord");
-
 
         shaderProgramTexture.useProgram();
 

@@ -22,15 +22,12 @@ public class Button extends View {
         this.textSize = AttributeParser.getDimension(attrs, "text_size", 10) * textModifier;
         this.isClickable = AttributeParser.getBoolean(attrs, "clickable", true);
 
-        this.backgroundPressedColor = AttributeParser.getColor(attrs, "background_pressed_color", "#FF0000");
-
-
         this.topPadding = AttributeParser.getDimension(attrs, "padding_top", 5);
         this.bottomPadding = AttributeParser.getDimension(attrs, "padding_bottom", 5);
         this.leftPadding = AttributeParser.getDimension(attrs, "padding_left", 5);
         this.rightPadding = AttributeParser.getDimension(attrs, "padding_right", 5);
 
-        this.textColor = AttributeParser.getColor(attrs, "text_color", "#000000");
+        this.textColor = AttributeParser.getColor(context, attrs, "text_color", "#000000");
     }
 
     @Override
