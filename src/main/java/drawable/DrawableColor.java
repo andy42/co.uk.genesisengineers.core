@@ -13,6 +13,7 @@ public class DrawableColor implements Drawable {
 
     private Vec3f color;
     private Shape shape;
+    private Vector2Df dimensions = new Vector2Df(1,1);
 
     public DrawableColor(Vec3f color, Shape shape){
         this.color = color;
@@ -36,5 +37,10 @@ public class DrawableColor implements Drawable {
 
         shape.postDraw(visualisation);
         glPopMatrix();
+    }
+
+    @Override
+    public Vector2Df getDimensions() {
+        return dimensions;
     }
 }

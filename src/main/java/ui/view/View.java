@@ -40,9 +40,9 @@ public class View {
 
     protected boolean isPressed = false;
 
-    protected final static int VISIBLE = 0;
-    protected final static int INVISIBLE = 1;
-    protected final static int GONE = 2;
+    public final static int VISIBLE = 0;
+    public final static int INVISIBLE = 1;
+    public final static int GONE = 2;
 
     protected ViewGroup parent = null;
 
@@ -76,7 +76,10 @@ public class View {
     }
 
     public View findViewById(int id){
-        return null;
+        if(this.id == id){
+            return this;
+        }
+        else return null;
     }
 
     public View () {
@@ -84,6 +87,10 @@ public class View {
 
     public Integer getId () {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Vector2Df getDimensions () {
@@ -154,6 +161,10 @@ public class View {
         return visibility;
     }
 
+    public void setVisibility(int visibility) {
+        this.visibility = visibility;
+    }
+
     public Context getContext () {
         return context;
     }
@@ -172,11 +183,12 @@ public class View {
     }
 
     public void render () {
+        if(visibility != VISIBLE) return;
         renderBackgound();
     }
 
     protected int getSize (int value, int parent) {
-        if (value == ViewGroup.LayoutParams.FILL_PARENT) {
+        if (value == ViewGroup.LayoutParams.MATCH_PARENT) {
             return parent;
         }
         if (value > 0) {
@@ -216,6 +228,11 @@ public class View {
     public void setParent(ViewGroup parent){
         this.parent = parent;
     }
+
+    public ViewGroup getParent() {
+        return parent;
+    }
+
     public void removeParent(){
         this.parent = null;
     }
@@ -255,6 +272,9 @@ public class View {
     }
 
     public boolean onTouchEvent(MotionEvent motionEvent){
+        if(getListenerInfo().mOnTouchListener != null){
+            getListenerInfo().mOnTouchListener.OnTouch(motionEvent, this);
+        }
 
         if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
             if(this.isClickable) {
@@ -304,6 +324,13 @@ public class View {
         getListenerInfo().mOnClickListener = listener;
     }
 
+    public void setOnTouchListener(OnTouchListener listener) {
+        if (!this.isClickable) {
+            setClickable(true);
+        }
+        getListenerInfo().mOnTouchListener = listener;
+    }
+
     protected ListenerInfo listenerInfo = new ListenerInfo();
 
     public ListenerInfo getListenerInfo(){
@@ -312,9 +339,13 @@ public class View {
 
     static class ListenerInfo {
         public OnClickListener mOnClickListener;
+        public OnTouchListener mOnTouchListener;
     }
 
     public interface OnClickListener {
         void onClick(View v);
+    }
+    public interface OnTouchListener{
+        void OnTouch(MotionEvent event, View v);
     }
 }

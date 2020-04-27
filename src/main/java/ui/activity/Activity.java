@@ -17,6 +17,7 @@ public abstract class Activity extends Context {
 
     protected Context baseContext;
 
+    protected FragmentManager fragmentManager;
 
     protected boolean open = false;
     protected View view = null;
@@ -37,6 +38,7 @@ public abstract class Activity extends Context {
     public Activity () {
         //baseContext = context;
         dragBarColor = AttributeParser.colorFromString("#8e8e8e");
+        fragmentManager = new FragmentManager(this);
     }
 
     public void setBaseContext(Context context){
@@ -58,6 +60,10 @@ public abstract class Activity extends Context {
 
     public View getView () {
         return this.view;
+    }
+
+    public void setView(View view) {
+        this.view = view;
     }
 
     public void update (double time) {
@@ -120,6 +126,10 @@ public abstract class Activity extends Context {
         return view.dispatchTouchEvent(newMotionEvent);
     }
 
+    public void onViewCreated(){
+
+    }
+
     public boolean pointCollisionTest(MotionEvent motionEvent){
         activityCollisionBox.initTopLeft(this.position, activityDimensions);
         return activityCollisionBox.pointCollisionTest(motionEvent.getPosition());
@@ -157,5 +167,12 @@ public abstract class Activity extends Context {
         }
 
         return false;
+    }
+
+    public View findViewById(int id){
+        if(view == null){
+            return null;
+        }
+        return view.findViewById(id);
     }
 }

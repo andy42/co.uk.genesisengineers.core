@@ -27,16 +27,27 @@ public abstract class ViewGroup extends View {
         super();
     }
 
-
     public void addView (View view) {
         view.setParent(this);
         this.children.add(view);
     }
+
     public void removeView (View view) {
         this.children.remove(view);
         view.removeParent();
     }
 
+    public boolean replace(View oldView, View newView){
+        for(int i = 0; i < children.size(); i++){
+            if(children.get(i) == oldView){
+                children.set(i, newView);
+                newView.setParent(this);
+                oldView.removeParent();
+                return true;
+            }
+        }
+        return false;
+    }
 
     /*
     //this is a work in progress need to work out how to do nested clipping
@@ -125,8 +136,8 @@ public abstract class ViewGroup extends View {
         }
 
         public LayoutParams () {
-            this.width = FILL_PARENT;
-            this.height = FILL_PARENT;
+            this.width = MATCH_PARENT;
+            this.height = MATCH_PARENT;
         }
 
         public LayoutParams (int with, int height) {
@@ -137,9 +148,8 @@ public abstract class ViewGroup extends View {
         public int width;
         public int height;
 
-        public final static int FILL_PARENT = -1;
-        public final static int MATCH_PARENT = -2;
-        public final static int WRAP_CONTENT = -3;
+        public final static int MATCH_PARENT = -1;
+        public final static int WRAP_CONTENT = -2;
     }
 
     public View findViewById(int id){

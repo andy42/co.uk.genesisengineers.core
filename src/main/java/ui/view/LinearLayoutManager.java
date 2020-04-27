@@ -94,6 +94,10 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
 
             this.roomToScroll = isRoomToScroll(recyclerView);
         }
+
+        for(RecyclerView.ViewHolder viewHolder : currentViewHolders){
+            adapter.bindViewHolder(viewHolder, viewHolder.index);
+        }
     }
 
     protected float getHighestPoint (RecyclerView.ViewHolder viewHolder){
@@ -256,7 +260,22 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
         removeViewsOutOfBounds(recyclerView);
     }
 
+    private boolean dispatchChildTouchEvent(MotionEvent motionEvent, View view){
+        MotionEvent newMotionEvent = null;
+        try {
+            newMotionEvent = (MotionEvent) motionEvent.clone();
+        }
+        catch (CloneNotSupportedException e){
+            return false;
+        }
+        return view.dispatchTouchEvent(newMotionEvent);
+    }
+
     public boolean dispatchTouchEvent(RecyclerView recyclerView, RecyclerView.Adapter adapter, MotionEvent motionEvent){
+        if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+            this.touchTarget = null;
+        }
+
         if(motionEvent.getAction() == MotionEvent.ACTION_MOVE){
             Vector2Df scrollAmount = moveAmount(recyclerView, adapter, motionEvent.getMotion());
             scrollRecyclerView(recyclerView, adapter, scrollAmount);
@@ -268,30 +287,21 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
             this.touchTarget = null;
         }
 
-        if(recyclerView.getOnItemClickListener() == null){
-            return true;
+        if(touchTarget != null){
+            if(motionEvent.getAction() == MotionEvent.ACTION_UP &&  recyclerView.getOnItemClickListener() != null){
+                recyclerView.getOnItemClickListener().onItemClick(this.touchTarget.index, this.touchTarget.view);
+            }
+            return touchTarget.view.dispatchTouchEvent(motionEvent);
         }
 
         if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-            this.touchTarget = null;
-
-            CollisionBox collisionBox = new CollisionBox();
-
             for(RecyclerView.ViewHolder viewHolder : this.currentViewHolders){
-                collisionBox.initTopLeft(viewHolder.view.position, viewHolder.view.dimensions);
-                if(collisionBox.pointCollisionTest(motionEvent.getPosition())){
+                if(dispatchChildTouchEvent(motionEvent, viewHolder.view)){
+                    Logger.info("ACTION_DOWN : "+viewHolder.index + " "+motionEvent.getPosition().toString());
                     this.touchTarget = viewHolder;
                 }
             }
         }
-
-        if(motionEvent.getAction() == MotionEvent.ACTION_UP && this.touchTarget != null){
-            recyclerView.getOnItemClickListener().onItemClick(this.touchTarget.index, this.touchTarget.view);
-            this.touchTarget = null;
-        }
-
         return true;
     }
-
-
 }

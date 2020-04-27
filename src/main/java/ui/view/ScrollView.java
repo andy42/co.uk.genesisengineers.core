@@ -2,6 +2,7 @@ package ui.view;
 
 import com.sun.javafx.geom.Vec3f;
 import content.Context;
+import drawable.DrawableManager;
 import input.MotionEvent;
 import ui.util.AttributeSet;
 import util.Logger;
@@ -39,6 +40,7 @@ public class ScrollView extends ViewGroup {
 
     @Override
     public void render () {
+        renderBackgound();
 
         if(this.children.size() == 0){
             return;
@@ -51,7 +53,7 @@ public class ScrollView extends ViewGroup {
 
         glEnable(GL_STENCIL_TEST);
 
-
+        Visualisation.getInstance().useColourProgram();
         glStencilMask(0xFF);
         glClear( GL_STENCIL_BUFFER_BIT);
         glStencilFunc(GL_EQUAL, 1, 0xFF);
@@ -90,14 +92,14 @@ public class ScrollView extends ViewGroup {
 
         if (layoutParams.width > 0) {
             width = layoutParams.width;
-        } else if (layoutParams.width == ViewGroup.LayoutParams.FILL_PARENT) {
+        } else if (layoutParams.width == ViewGroup.LayoutParams.MATCH_PARENT) {
             width = widthMeasureSpec;
         }
 
         //Height
         if (layoutParams.height > 0) {
             height = layoutParams.height;
-        } else if (layoutParams.height == ViewGroup.LayoutParams.FILL_PARENT) {
+        } else if (layoutParams.height == ViewGroup.LayoutParams.MATCH_PARENT) {
             height = heightMeasureSpec;
         }
 
@@ -139,6 +141,8 @@ public class ScrollView extends ViewGroup {
 
         Vector2Df newPosition;
         Vector2Df maxDisplacement = Vector2Df.sub( this.getDimensions(), child.getDimensions());
+        if(maxDisplacement.x < 0)maxDisplacement.x = 0;
+        if(maxDisplacement.y < 0)maxDisplacement.y= 0;
 
         if(this.orientation == VERTICAL){
             Vector2Df orientationDisplacement = new Vector2Df(0f, displacement.y);

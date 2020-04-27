@@ -45,6 +45,7 @@ public class ActivityManager {
         activity.onCreate();
         activity.onMeasure(500, 500);
         activity.onLayout(500, 500, 0,0);
+        activity.onViewCreated();
     }
 
     public void update () {

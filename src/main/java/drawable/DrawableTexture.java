@@ -13,11 +13,13 @@ public class DrawableTexture implements Drawable {
     private Texture texture;
     private TextureRegion textureRegion;
     private Shape shape;
+    private Vector2Df dimensions;
 
-    public DrawableTexture(Texture texture, TextureRegion textureRegion, Shape shape){
+    public DrawableTexture(Texture texture, TextureRegion textureRegion, Shape shape, Vector2Df dimensions){
         this.texture = texture;
         this.textureRegion = textureRegion;
         this.shape = shape;
+        this.dimensions = dimensions;
     }
 
     @Override
@@ -40,5 +42,10 @@ public class DrawableTexture implements Drawable {
         shape.postDraw(visualisation);
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
         glPopMatrix();
+    }
+
+    @Override
+    public Vector2Df getDimensions() {
+        return dimensions;
     }
 }
