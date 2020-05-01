@@ -57,9 +57,9 @@ public class GridLayoutManager extends LinearLayoutManager {
         for(int i=0; i< viewHolderToAdd.size(); i++){
             RecyclerView.ViewHolder viewHolder = viewHolderToAdd.get(i);
             if(this.orientation == this.VERTICAL){
-                viewHolder.view.onLayout( (int)columnWidth, (int)maxDimension,(int)columnWidth*i, (int)(lowestPoint - maxDimension) );
+                viewHolder.view.onLayout( (int)columnWidth, (int)maxDimension,(int)columnWidth*(columnCount -i -1), (int)(lowestPoint - maxDimension) );
             } else {
-                viewHolder.view.onLayout((int)maxDimension, (int)columnWidth, (int)(lowestPoint - maxDimension), (int)columnWidth*i);
+                viewHolder.view.onLayout((int)maxDimension, (int)columnWidth, (int)(lowestPoint - maxDimension), (int)columnWidth*(columnCount -i -1));
             }
 
             recyclerView.addView(viewHolder.view);

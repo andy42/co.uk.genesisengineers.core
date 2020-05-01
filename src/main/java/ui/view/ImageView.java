@@ -27,11 +27,13 @@ public class ImageView extends View {
         super.render();
         if(visibility != VISIBLE) return;
 
-        if (drawable == null){ }
-        else if(drawable instanceof DrawableArray){
-            ((DrawableArray)drawable).draw(getPosition().add(getDimensions().multiply(new Vector2Df(0.5f, 0.5f))), getDimensions(), 0, drawableArrayIndex);
-        } else {
-            drawable.draw(getPosition().add(getDimensions().multiply(new Vector2Df(0.5f, 0.5f))), getDimensions(), 0);
+        if (drawable != null) {
+            if (drawable instanceof DrawableArray) {
+                ((DrawableArray) drawable).draw(getPosition().add(getDimensions().multiply(new Vector2Df(0.5f, 0.5f))), getDimensions(), 0, drawableArrayIndex);
+            }
+            else {
+                drawable.draw(getPosition().add(getDimensions().multiply(new Vector2Df(0.5f, 0.5f))), getDimensions(), 0);
+            }
         }
     }
 
@@ -60,7 +62,8 @@ public class ImageView extends View {
 
                     if(drawable != null && drawable.getDimensions().x != 0){
                         height = (int)(drawable.getDimensions().y/drawable.getDimensions().x)*width;
-                    } else {
+                    }
+                    else {
                         height = 0;
                     }
                     break;
@@ -82,7 +85,8 @@ public class ImageView extends View {
 
                     if(drawable != null && drawable.getDimensions().y != 0){
                         width = (int)(drawable.getDimensions().x/drawable.getDimensions().y)*height;
-                    } else {
+                    }
+                    else {
                         width = 0;
                     }
                     break;

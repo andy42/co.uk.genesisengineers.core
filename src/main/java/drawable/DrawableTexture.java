@@ -26,6 +26,8 @@ public class DrawableTexture implements Drawable {
     public void draw(Vector2Df coordinates, Vector2Df dimensions, float rotation) {
         Visualisation visualisation = Visualisation.getInstance();
         visualisation.useTextureProgram();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         shape.preDraw(visualisation);
 
@@ -41,6 +43,7 @@ public class DrawableTexture implements Drawable {
 
         shape.postDraw(visualisation);
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisable(GL_BLEND);
         glPopMatrix();
     }
 

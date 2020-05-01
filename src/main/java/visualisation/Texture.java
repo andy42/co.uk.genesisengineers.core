@@ -96,7 +96,7 @@ public class Texture {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureId);
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
 
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, this.width, this.height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, byteBuffer);
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, this.width, this.height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, byteBuffer);
 
         GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
     }

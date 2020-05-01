@@ -42,7 +42,7 @@ public class Vector2Df implements Cloneable{
         return (float) Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
-    Vector2Df floorVector2D () {
+    public Vector2Df floor () {
         return new Vector2Df((float) Math.floor(this.x), (float) Math.floor(this.y));
     }
 
@@ -62,6 +62,14 @@ public class Vector2Df implements Cloneable{
         return new Vector2Df(left.x * right, left.y * right);
     }
 
+    public static Vector2Df divide (Vector2Df left, float right) {
+        return new Vector2Df(left.x / right, left.y / right);
+    }
+
+    public static Vector2Df divide (Vector2Df left, Vector2Df right) {
+        return new Vector2Df(left.x / right.x, left.y / right.y);
+    }
+
     public void rotate (float angle) {
         float cs = (float) Math.cos(angle);
         float sn = (float) Math.sin(angle);
@@ -75,6 +83,10 @@ public class Vector2Df implements Cloneable{
 
     public Vector2Df multiply (Vector2Df vector2) {
         return Vector2Df.multiply(this, vector2);
+    }
+
+    public Vector2Df divide (Vector2Df vector2) {
+        return Vector2Df.divide(this, vector2);
     }
 
     public Vector2Df add (Vector2Df vector2) {

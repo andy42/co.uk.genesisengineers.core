@@ -66,7 +66,6 @@ public abstract class Fragment {
 
     public void setView(View view) {
         this.view = view;
-        onViewCreated(view);
     }
 
     public int getId() {

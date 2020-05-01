@@ -219,20 +219,20 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
         }
     }
 
+    protected void onLayoutChild(RecyclerView recyclerView, View view, float top){
+        view.onMeasure((int)recyclerView.dimensions.x, (int)recyclerView.dimensions.y);
+        if(this.orientation == this.VERTICAL){
+            view.onLayout((int)recyclerView.dimensions.x, view.getMeasuredHeight(), 0, (int)top);
+        }
+        else {
+            view.onLayout(view.getMeasuredWidth(), (int)recyclerView.dimensions.y, (int)top, 0);
+        }
+    }
 
     protected void initChildViewEnd(RecyclerView recyclerView, RecyclerView.Adapter adapter, RecyclerView.ViewHolder viewHolder, float top){
-        View newView = viewHolder.view;
         adapter.bindViewHolder(viewHolder, viewHolder.index);
-        viewHolder.view.onMeasure((int)recyclerView.dimensions.x, (int)recyclerView.dimensions.y);
-
-
-
-        if(this.orientation == this.VERTICAL){
-            viewHolder.view.onLayout((int)recyclerView.dimensions.x, newView.getMeasuredHeight(), 0, (int)top);
-        } else {
-            viewHolder.view.onLayout(newView.getMeasuredWidth(), (int)recyclerView.dimensions.y, (int)top, 0);
-        }
-        recyclerView.addView(newView);
+        onLayoutChild(recyclerView, viewHolder.view, top);
+        recyclerView.addView(viewHolder.view);
     }
 
     protected void initChildViewStart(RecyclerView recyclerView, RecyclerView.Adapter adapter, RecyclerView.ViewHolder viewHolder, float bottom){
@@ -297,7 +297,6 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
         if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
             for(RecyclerView.ViewHolder viewHolder : this.currentViewHolders){
                 if(dispatchChildTouchEvent(motionEvent, viewHolder.view)){
-                    Logger.info("ACTION_DOWN : "+viewHolder.index + " "+motionEvent.getPosition().toString());
                     this.touchTarget = viewHolder;
                 }
             }

@@ -50,6 +50,7 @@ public class FragmentManager {
 
         fragmentView.onMeasure(view.getMeasuredWidth(), view.getMeasuredHeight());
         fragmentView.onLayout(view.getMeasuredWidth(), view.getMeasuredHeight(), (int)view.getPosition().x, (int)view.getPosition().y);
+        newFragment.onViewCreated(fragmentView);
 
         if(view.getParent() == null){
             activity.setView(newFragment.getView());

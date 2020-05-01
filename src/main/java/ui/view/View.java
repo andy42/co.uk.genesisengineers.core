@@ -79,7 +79,7 @@ public class View {
         if(this.id == id){
             return this;
         }
-        else return null;
+        return null;
     }
 
     public View () {

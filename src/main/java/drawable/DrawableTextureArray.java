@@ -44,6 +44,8 @@ public class DrawableTextureArray implements Drawable, DrawableArray{
         }
         Visualisation visualisation = Visualisation.getInstance();
         visualisation.useTextureProgram();
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         shape.preDraw(visualisation);
 
@@ -59,6 +61,7 @@ public class DrawableTextureArray implements Drawable, DrawableArray{
 
         shape.postDraw(visualisation);
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisable(GL_BLEND);
         glPopMatrix();
     }
 
