@@ -18,11 +18,13 @@ public class DrawableTextureArray implements Drawable, DrawableArray{
     private Texture texture;
     private List<TextureRegion> textureRegionList;
     private Shape shape;
+    private Vector2Df dimensions;
 
-    public DrawableTextureArray(Texture texture, List<TextureRegion> textureRegionList, Shape shape){
+    public DrawableTextureArray(Texture texture, List<TextureRegion> textureRegionList, Shape shape, Vector2Df dimensions){
         this.texture = texture;
         this.textureRegionList = textureRegionList;
         this.shape = shape;
+        this.dimensions = dimensions;
     }
 
     @Override
@@ -30,6 +32,7 @@ public class DrawableTextureArray implements Drawable, DrawableArray{
         draw(coordinates, dimensions, rotation, 0);
     }
 
+    @Override
     public int size(){
         return textureRegionList.size();
     }
@@ -57,5 +60,10 @@ public class DrawableTextureArray implements Drawable, DrawableArray{
         shape.postDraw(visualisation);
         glDisableClientState(GL_TEXTURE_COORD_ARRAY);
         glPopMatrix();
+    }
+
+    @Override
+    public Vector2Df getDimensions() {
+        return dimensions;
     }
 }

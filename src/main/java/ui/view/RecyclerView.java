@@ -41,7 +41,6 @@ public class RecyclerView extends ViewGroup{
 
         glEnable(GL_STENCIL_TEST);
 
-
         glStencilMask(0xFF);
         glClear( GL_STENCIL_BUFFER_BIT);
         glStencilFunc(GL_EQUAL, 1, 0xFF);
@@ -78,14 +77,14 @@ public class RecyclerView extends ViewGroup{
 
         if (layoutParams.width > 0) {
             width = layoutParams.width;
-        } else if (layoutParams.width == ViewGroup.LayoutParams.FILL_PARENT) {
+        } else if (layoutParams.width == ViewGroup.LayoutParams.MATCH_PARENT) {
             width = widthMeasureSpec;
         }
 
         //Height
         if (layoutParams.height > 0) {
             height = layoutParams.height;
-        } else if (layoutParams.height == ViewGroup.LayoutParams.FILL_PARENT) {
+        } else if (layoutParams.height == ViewGroup.LayoutParams.MATCH_PARENT) {
             height = heightMeasureSpec;
         }
 
@@ -108,7 +107,7 @@ public class RecyclerView extends ViewGroup{
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent motionEvent){
-        boolean returnValue = super.dispatchTouchEvent(motionEvent);
+        //boolean returnValue = super.dispatchTouchEvent(motionEvent);
 
         MotionEvent newMotionEvent = null;
         try {
@@ -117,12 +116,12 @@ public class RecyclerView extends ViewGroup{
         catch (CloneNotSupportedException e){
             return false;
         }
-        newMotionEvent.transformPosition(Vector2Df.multiply(this.positionOffset, -1f));
+        newMotionEvent.transformPosition(Vector2Df.multiply(this.positionOffset, -1f).add(position));
 
         if(this.layoutManager != null && this.adapter != null){
             return this.layoutManager.dispatchTouchEvent(this, adapter, newMotionEvent);
         }
-        return returnValue;
+        return false;
     }
 
     public void setAdapter(Adapter adapter) {
@@ -203,10 +202,10 @@ public class RecyclerView extends ViewGroup{
         }
     }
 
-    public static abstract class Adapter{
+    public static abstract class Adapter<T>{
         private RecyclerView listener = null;
         public abstract ViewHolder createViewHolder(ViewGroup parent, int viewType);
-        public abstract void bindViewHolder(ViewHolder holder, int position);
+        public abstract void bindViewHolder(T holder, int position);
         public abstract int getItemCount();
 
         public Adapter(){

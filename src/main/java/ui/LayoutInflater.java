@@ -1,4 +1,4 @@
-package ui.view;
+package ui;
 
 //https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/view/LayoutInflater.java
 //http://www.xmlpull.org/v1/download/unpacked/doc/quick_intro.html
@@ -10,6 +10,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 import ui.util.AttributeSet;
 import ui.util.Xml;
+import ui.view.*;
 import util.FileLoader;
 import util.Logger;
 
@@ -157,6 +158,12 @@ public class LayoutInflater {
         }
         else if(name.equalsIgnoreCase("EditText")){
             return new EditText(context, attrs);
+        }
+        else if(name.equalsIgnoreCase("FrameLayout")){
+            return new FrameLayout(context, attrs);
+        }
+        else if(name.equalsIgnoreCase("ImageView")){
+            return new ImageView(context, attrs);
         }
 
         return createView(name, "", attrs);

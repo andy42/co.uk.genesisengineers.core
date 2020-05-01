@@ -68,24 +68,26 @@ public class LinearLayout extends ViewGroup {
         int width = 0;
         int height = 0;
         totalLength = 0;
+        float totalWeight = 0;
 
         //Width
         if (layoutParams.width > 0) {
             width = layoutParams.width;
-        } else if (layoutParams.width == ViewGroup.LayoutParams.FILL_PARENT) {
+        } else if (layoutParams.width == ViewGroup.LayoutParams.MATCH_PARENT) {
             width = widthMeasureSpec;
         }
 
         //Height
         if (layoutParams.height > 0) {
             height = layoutParams.height;
-        } else if (layoutParams.height == ViewGroup.LayoutParams.FILL_PARENT) {
+        } else if (layoutParams.height == ViewGroup.LayoutParams.MATCH_PARENT) {
             height = heightMeasureSpec;
         }
 
         for (View child : children) {
 
             child.onMeasure(width, height);
+            totalWeight += ((LayoutParams)child.getLayoutParams()).layoutWeight;
 
             int childWidth = child.getMeasuredWidth() + child.getLeftMargin() + child.getRightMargin();
             int childHeight = child.getMeasuredHeight() + child.getTopMargin() + child.getBottomMargin();
@@ -95,6 +97,19 @@ public class LinearLayout extends ViewGroup {
                 width = childWidth;
             }
         }
+
+        if(totalWeight > 0) {
+            float oneUnitWeight = (height - totalLength)/totalWeight;
+            for (View child : children) {
+                float childWeight = ((LayoutParams) child.getLayoutParams()).layoutWeight;
+                if (childWeight == 0) {
+                    continue;
+                }
+                child.setMeasuredDimension(child.getMeasuredWidth(), (int)(oneUnitWeight*childWeight));
+            }
+            totalLength = height;
+        }
+
 
         if (layoutParams.height == ViewGroup.LayoutParams.WRAP_CONTENT) {
             height = totalLength;
@@ -108,23 +123,26 @@ public class LinearLayout extends ViewGroup {
         int width = 0;
         int height = 0;
         totalLength = 0;
+        float totalWeight = 0;
 
         //Width
         if (layoutParams.width > 0) {
             width = layoutParams.width;
-        } else if (layoutParams.width == ViewGroup.LayoutParams.FILL_PARENT) {
+        } else if (layoutParams.width == ViewGroup.LayoutParams.MATCH_PARENT) {
             width = widthMeasureSpec;
         }
 
         //Height
         if (layoutParams.height > 0) {
             height = layoutParams.height;
-        } else if (layoutParams.height == ViewGroup.LayoutParams.FILL_PARENT) {
+        } else if (layoutParams.height == ViewGroup.LayoutParams.MATCH_PARENT) {
             height = heightMeasureSpec;
         }
 
         for (View child : children) {
             child.onMeasure(width, height);
+            totalWeight += ((LayoutParams)child.getLayoutParams()).layoutWeight;
+
             int childWidth = child.getMeasuredWidth() + child.getLeftMargin() + child.getRightMargin();
             int childHeight = child.getMeasuredHeight() + child.getTopMargin() + child.getBottomMargin();
 
@@ -134,6 +152,19 @@ public class LinearLayout extends ViewGroup {
             }
 
         }
+
+        if(totalWeight > 0) {
+            float oneUnitWeight = (width - totalLength)/totalWeight;
+            for (View child : children) {
+                float childWeight = ((LayoutParams) child.getLayoutParams()).layoutWeight;
+                if (childWeight == 0) {
+                    continue;
+                }
+                child.setMeasuredDimension((int)(oneUnitWeight*childWeight), child.getMeasuredHeight());
+            }
+            totalLength = width;
+        }
+
         if (layoutParams.width == ViewGroup.LayoutParams.WRAP_CONTENT) {
             width = totalLength;
         }
@@ -213,10 +244,12 @@ public class LinearLayout extends ViewGroup {
 
     public static class LayoutParams extends ViewGroup.LayoutParams {
         public int layoutGravity = Gravity.CENTER;
+        public float layoutWeight = 0;
 
         public LayoutParams (Context context, AttributeSet attrs) {
             width = AttributeParser.getLayoutDimension(attrs, "layout_width");
             height = AttributeParser.getLayoutDimension(attrs, "layout_height");
+            layoutWeight = AttributeParser.getFloat(attrs, "layout_weight");
 
             String layoutGravityValue = AttributeParser.getString(attrs, "layout_gravity");
             switch (layoutGravityValue) {

@@ -24,6 +24,7 @@ import java.util.List;
 public class DrawableFactoryJson {
 
     private static final String SHAPE_KEY = "shape";
+    private static final String DIMENSIONS_KEY = "dimensions";
 
     private static final String TYPE_KEY = "type";
     private static final String COLOR_KEY = "color";
@@ -49,9 +50,21 @@ public class DrawableFactoryJson {
         return loadRes(resId, new JSONObject(fileString));
     }
 
+    private String getStringFromJsonObject(JSONObject jsonObject, String key){
+        try {
+            return jsonObject.getString(key);
+        }
+        catch (Exception e){
+            return null;
+        }
+    }
+
     private Drawable loadRes(int resId, JSONObject jsonObject) {
         Texture texture;
         Shape shape;
+        Vector2Df dimensions;
+        int itemWidth;
+        int itemHeight;
 
         try {
             switch (jsonObject.getString(TYPE_KEY)) {
@@ -64,12 +77,15 @@ public class DrawableFactoryJson {
                 case DRAWABLE_TEXTURE_KEY:
                     texture = textureManager.getTexture(jsonObject.getInt(TEXTURE_KEY));
                     shape = shapeManager.getShape(jsonObject.getInt(SHAPE_KEY));
-                    return new DrawableTexture(texture, new TextureRegion(texture, new Vector2Df(0, 0), new Vector2Df(texture.getWidth(), texture.getHeight())), shape);
+                    dimensions= new Vector2Df(texture.getWidth(), texture.getHeight());
+                    return new DrawableTexture(texture, new TextureRegion(texture, new Vector2Df(0, 0), dimensions), shape, dimensions);
 
                 case DRAWABLE_TEXTURE_ARRAY_KEY:
                     texture = textureManager.getTexture(jsonObject.getInt(TEXTURE_KEY));
                     shape = shapeManager.getShape(jsonObject.getInt(SHAPE_KEY));
-                    return new DrawableTextureArray(texture, createTextureRegionList(texture, jsonObject), shape);
+                    itemWidth = jsonObject.getInt("itemWidth");
+                    itemHeight = jsonObject.getInt("itemHeight");
+                    return new DrawableTextureArray(texture, createTextureRegionList(texture, jsonObject), shape, new Vector2Df(itemWidth, itemHeight));
             }
         }
         catch (Exception e){

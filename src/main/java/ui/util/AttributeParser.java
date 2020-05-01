@@ -5,8 +5,7 @@ import content.Context;
 import content.colors.Color;
 import ui.view.ViewGroup;
 import util.Logger;
-
-import java.awt.*;
+import util.Vector2Df;
 
 public class AttributeParser {
 
@@ -17,9 +16,7 @@ public class AttributeParser {
             return defaultValue;
         }
 
-        if (value.equalsIgnoreCase("FILL_PARENT")) {
-            return ViewGroup.LayoutParams.FILL_PARENT;
-        } else if (value.equalsIgnoreCase("MATCH_PARENT")) {
+        if (value.equalsIgnoreCase("MATCH_PARENT")) {
             return ViewGroup.LayoutParams.MATCH_PARENT;
         } else if (value.equalsIgnoreCase("WRAP_CONTENT")) {
             return ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -112,6 +109,40 @@ public class AttributeParser {
         }
         else {
             return false;
+        }
+    }
+    public static Float getFloat (AttributeSet attrs, String key) {
+        return getFloat(attrs, key, 0f);
+    }
+    public static Float getFloat (AttributeSet attrs, String key, Float defaultValue) {
+        try {
+            return Float.parseFloat( attrs.getAttributeValue(null, key));
+        } catch (Exception e){
+            return defaultValue;
+        }
+    }
+
+    public static Vector2Df getVector2DfFromString(String value, Vector2Df defaultValue){
+        if(value == null){
+            return null;
+        }
+        try {
+            String[] values = value.split(",");
+            if(values.length == 2){
+                return new Vector2Df(Float.parseFloat(values[0]), Float.parseFloat(values[1]));
+            }
+        } catch (Exception e){
+            return defaultValue;
+        }
+        return defaultValue;
+    }
+
+    public static Vector2Df getVector2Df(AttributeSet attrs, String key, Vector2Df defaultValue){
+        try {
+            String value = attrs.getAttributeValue(null, key);
+            return getVector2DfFromString(value, defaultValue);
+        } catch (Exception e){
+            return defaultValue;
         }
     }
 }
