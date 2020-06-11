@@ -31,12 +31,16 @@ public class LayoutInflater {
 
     final Object[] mConstructorArgs = new Object[2];
 
-    public View inflate (Context context, int layoutId, ViewGroup root) {
+    public View inflate (Context context, int layoutId, ViewGroup root, boolean addToRoot) {
         mContext= context;
-        return inflate(context.getResources().getAssetFile(layoutId), root);
+        return inflate(context.getResources().getAssetFile(layoutId), root, addToRoot);
     }
 
-    public View inflate (File file, ViewGroup root) {
+    public View inflate (Context context, int layoutId, ViewGroup root) {
+        return inflate(context, layoutId, root, true );
+    }
+
+    public View inflate (File file, ViewGroup root, boolean addToRoot) {
         try {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
@@ -53,7 +57,7 @@ public class LayoutInflater {
             }
 
             xpp.setInput(new StringReader(fileString));
-            return inflate(xpp, root);
+            return inflate(xpp, root, addToRoot);
 
         } catch (XmlPullParserException e) {
             Logger.exception(e, "LayoutInflater.inflate XmlPullParserException");
@@ -61,7 +65,7 @@ public class LayoutInflater {
         }
     }
 
-    public View inflate (XmlPullParser parser, ViewGroup root) {
+    public View inflate (XmlPullParser parser, ViewGroup root, boolean addToRoot) {
 
         final Context inflaterContext = mContext;
 
@@ -97,7 +101,7 @@ public class LayoutInflater {
 
             rInflateChildren(parser, temp, attrs, true);
 
-            if (temp != null && root != null) {
+            if (temp != null && root != null && addToRoot == true ) {
                 root.addView(temp);
             }
             return temp;

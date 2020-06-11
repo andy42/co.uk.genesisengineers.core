@@ -72,6 +72,12 @@ public class RecyclerView extends ViewGroup{
 
     @Override
     public void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
+
+        if(visibility == View.GONE){
+            setMeasuredDimension(0, 0);
+            return;
+        }
+
         int width = 0;
         int height = 0;
 
@@ -141,6 +147,13 @@ public class RecyclerView extends ViewGroup{
         this.layoutManager = layoutManager;
     }
 
+    public Vector2Df getPositionOffset() {
+        return positionOffset;
+    }
+
+    public void setPositionOffset(Vector2Df positionOffset) {
+        this.positionOffset = positionOffset;
+    }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent motionEvent){
@@ -191,9 +204,9 @@ public class RecyclerView extends ViewGroup{
 
     public static abstract class ViewHolder{
         public View view;
-        int index = NO_INDEX;
-        long itemId = NO_ID;
-        int itemViewType = INVALID_TYPE;
+        public int index = NO_INDEX;
+        public long itemId = NO_ID;
+        public int itemViewType = INVALID_TYPE;
 
         public ViewHolder(){
         }

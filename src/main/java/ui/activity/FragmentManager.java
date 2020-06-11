@@ -27,7 +27,7 @@ public class FragmentManager {
         Stack<Fragment> backStack = getBackStack(viewId);
 
         if(backStack.size() > 0){
-            Fragment oldFragment = backStack.pop();
+            Fragment oldFragment = backStack.peek();
             oldFragment.onDestroyView();
 
             if(addToBackStack == false){
@@ -48,15 +48,14 @@ public class FragmentManager {
         View fragmentView = newFragment.onCreateView(view.getParent());
         newFragment.setView(fragmentView);
 
-        fragmentView.onMeasure(view.getMeasuredWidth(), view.getMeasuredHeight());
-        fragmentView.onLayout(view.getMeasuredWidth(), view.getMeasuredHeight(), (int)view.getPosition().x, (int)view.getPosition().y);
-        newFragment.onViewCreated(fragmentView);
 
         if(view.getParent() == null){
             activity.setView(newFragment.getView());
         } else {
             view.getParent().replace(view, newFragment.getView());
         }
+        fragmentView.invalidateLayout();
+        newFragment.onViewCreated(fragmentView);
 
         fragmentView.setId(viewIdToBeReplaced);
 
@@ -75,6 +74,7 @@ public class FragmentManager {
 
 
         Fragment newFragment = backStack.peek();
+        newFragment.onAttach(activity);
 
         View fragmentView = newFragment.onCreateView(currentFragment.getView().getParent());
         newFragment.setView(fragmentView);
@@ -83,6 +83,11 @@ public class FragmentManager {
         fragmentView.onLayout(currentView.getMeasuredWidth(), currentView.getMeasuredHeight(), (int)currentView.getPosition().x, (int)currentView.getPosition().y);
 
         currentView.getParent().replace(currentView, newFragment.getView());
+
+        fragmentView.invalidateLayout();
+        newFragment.onViewCreated(fragmentView);
+        fragmentView.setId(viewId);
+
         newFragment.onResume();
 
         currentFragment.onDestroyView();

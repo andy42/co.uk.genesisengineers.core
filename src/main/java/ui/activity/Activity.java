@@ -8,6 +8,7 @@ import input.MotionEvent;
 import ui.util.AttributeParser;
 import ui.view.View;
 import util.CollisionBox;
+import util.Logger;
 import util.Vector2Df;
 import visualisation.Visualisation;
 
@@ -24,11 +25,7 @@ public abstract class Activity extends Context {
 
     protected boolean hasDragBar = true;
     protected boolean isDragging = false;
-    protected int dragBarHeight = 15;
-    protected Vector2Df dragBarDimensions = new Vector2Df(0, 0);
     protected Vector2Df dragBarClickOffset = new Vector2Df(0, 0);
-    CollisionBox dragBarCollisionBox = new CollisionBox();
-    protected Vec3f dragBarColor = null;
 
     protected Vector2Df activityDimensions = new Vector2Df(0, 0);
     CollisionBox activityCollisionBox = new CollisionBox();
@@ -36,8 +33,6 @@ public abstract class Activity extends Context {
     protected Vector2Df position = new Vector2Df(100, 100);
 
     public Activity () {
-        //baseContext = context;
-        dragBarColor = AttributeParser.colorFromString("#8e8e8e");
         fragmentManager = new FragmentManager(this);
     }
 
@@ -80,12 +75,6 @@ public abstract class Activity extends Context {
 
         glPushMatrix();
         glTranslatef(position.x, position.y, 0);
-        glScalef(dragBarDimensions.x, dragBarDimensions.y, 0);
-        Visualisation.getInstance().drawColouredSquareTopLeft(dragBarColor);
-        glPopMatrix();
-
-        glPushMatrix();
-        glTranslatef(position.x, position.y, 0);
         view.render();
         glPopMatrix();
 
@@ -106,11 +95,10 @@ public abstract class Activity extends Context {
         if (this.view == null) {
             return;
         }
-        dragBarDimensions = new Vector2Df(this.view.getMeasuredWidth(), dragBarHeight);
-        this.view.onLayout(this.view.getMeasuredWidth(), this.view.getMeasuredHeight(), x, ((hasDragBar) ? dragBarHeight : 0));
+        this.view.onLayout(this.view.getMeasuredWidth(), this.view.getMeasuredHeight(), x, 0);
 
         activityDimensions.x = this.view.getMeasuredWidth();
-        activityDimensions.y = this.view.getMeasuredHeight() + ((hasDragBar) ? dragBarHeight : 0);
+        activityDimensions.y = this.view.getMeasuredHeight();
     }
 
     private boolean dispatchTransformedTouchEvent(MotionEvent motionEvent){
@@ -143,22 +131,35 @@ public abstract class Activity extends Context {
         return this.view.dispatchKeyEvent(keyEvent);
     }
 
-    public Boolean dispatchTouchEvent (MotionEvent motionEvent) {
-        //Logger.info("touchEvent DragBar "+point.toString());
-        if (hasDragBar) {
-            dragBarCollisionBox.initTopLeft(position, dragBarDimensions);
+    public void setDragbar(int viewId){
+        View dragBar = view.findViewById(viewId);
+        if(dragBar == null){
+            return;
+        }
 
-            Vector2Df mousePos = motionEvent.getPosition();
-            if ((motionEvent.getAction() == MotionEvent.ACTION_DOWN) && dragBarCollisionBox.pointCollisionTest(motionEvent.getPosition()) && isDragging == false) {
-                isDragging = true;
-                dragBarClickOffset = Vector2Df.sub(mousePos, this.position);
-                return true;
-            } else if (isDragging && (motionEvent.getAction() == MotionEvent.ACTION_UP)) {
-                isDragging = false;
-                return true;
-            } else if (isDragging && (motionEvent.getAction() == MotionEvent.ACTION_MOVE)) {
-                position = mousePos.sub(dragBarClickOffset);
-                return true;
+        hasDragBar = true;
+        dragBar.setOnTouchListener((MotionEvent event, View v) -> {
+            onDragBarMovement(event);
+        });
+    }
+
+    private void onDragBarMovement(MotionEvent motionEvent){
+        if ((motionEvent.getAction() == MotionEvent.ACTION_DOWN)) {
+            isDragging = true;
+        } else if (isDragging && (motionEvent.getAction() == MotionEvent.ACTION_UP)) {
+            isDragging = false;
+        }
+    }
+
+    public Boolean dispatchTouchEvent (MotionEvent motionEvent) {
+        if (hasDragBar) {
+            if(isDragging && dragBarClickOffset == null){
+                dragBarClickOffset = Vector2Df.sub(motionEvent.getPosition(), this.position);
+            }
+            else if(isDragging){
+                position = motionEvent.getPosition().sub(dragBarClickOffset);
+            } else {
+                dragBarClickOffset = null;
             }
         }
 

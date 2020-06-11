@@ -16,6 +16,11 @@ public class FrameLayout extends ViewGroup {
     @Override
     public void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
 
+        if(visibility == View.GONE){
+            setMeasuredDimension(0, 0);
+            return;
+        }
+
         int width = 0;
         int height = 0;
 

@@ -7,8 +7,11 @@ import drawable.json.DrawableFactoryJson;
 import shape.Shape;
 import shape.ShapeManager;
 import ui.util.AttributeParser;
+import util.Logger;
 import util.Vector2Df;
+import visualisation.Texture;
 import visualisation.TextureManager;
+import visualisation.TextureRegion;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -52,9 +55,23 @@ public class DrawableManager {
         }
     }
 
+    //used to create drawables from colors so you do not have to define them all individually
     public void createColorDrawables(Collection<Color> colors, Shape shape){
         for(Color color : colors){
             addDrawable(color.id, new DrawableColor(AttributeParser.colorFromString(color.hexValue), shape));
+        }
+    }
+
+    //used to create drawables from Textures so you do not have to define them all individually
+    public void createTextureDrawables(Collection<Texture> textures, Shape shape){
+        for(Texture texture : textures){
+            try {
+                Vector2Df dimensions= new Vector2Df(texture.getWidth(), texture.getHeight());
+                addDrawable(texture.getId(), new DrawableTexture(texture, new TextureRegion(texture, new Vector2Df(0, 0), dimensions), shape, dimensions));
+            }
+            catch (Exception e){
+                Logger.exception(e, e.getMessage());
+            }
         }
     }
 

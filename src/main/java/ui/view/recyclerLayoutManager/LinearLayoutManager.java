@@ -1,6 +1,8 @@
-package ui.view;
+package ui.view.recyclerLayoutManager;
 
 import input.MotionEvent;
+import ui.view.RecyclerView;
+import ui.view.View;
 import util.CollisionBox;
 import util.Logger;
 import util.Vector2Df;
@@ -32,7 +34,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
     protected boolean isRoomToScroll(RecyclerView recyclerView){
         if(this.currentViewHolders.size() > 0){
             float lowestPoint = geLowestPoint(this.currentViewHolders.getLast());
-            if( lowestPoint < ((this.orientation == VERTICAL) ? recyclerView.dimensions.y : recyclerView.dimensions.x)){
+            if( lowestPoint < ((this.orientation == VERTICAL) ? recyclerView.getDimensions().y : recyclerView.getDimensions().x)){
                 return false;
             } else {
                 return true;
@@ -54,12 +56,12 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
             if(this.currentViewHolders.getFirst().index == 0 && orientationMove < 0){
                 RecyclerView.ViewHolder startViewHolders = this.currentViewHolders.getFirst();
                 if(this.orientation == VERTICAL){
-                    if( (recyclerView.positionOffset.y + orientationMove) <= startViewHolders.view.position.y){
-                        return new Vector2Df(0, ((recyclerView.positionOffset.y)- startViewHolders.view.position.y)*-1);
+                    if( (recyclerView.getPositionOffset().y + orientationMove) <= startViewHolders.view.getPosition().y){
+                        return new Vector2Df(0, ((recyclerView.getPositionOffset().y)- startViewHolders.view.getPosition().y)*-1);
                     }
                 } else {
-                    if( (recyclerView.positionOffset.x + orientationMove) < startViewHolders.view.position.x){
-                        return new Vector2Df(((recyclerView.positionOffset.x)- startViewHolders.view.position.x)*-1, 0);
+                    if( (recyclerView.getPositionOffset().x + orientationMove) < startViewHolders.view.getPosition().x){
+                        return new Vector2Df(((recyclerView.getPositionOffset().x)- startViewHolders.view.getPosition().x)*-1, 0);
                     }
                 }
             }
@@ -68,12 +70,12 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
                 RecyclerView.ViewHolder endViewHolders = this.currentViewHolders.getLast();
 
                 if(this.orientation == VERTICAL){
-                    if((recyclerView.positionOffset.y + recyclerView.dimensions.y + orientationMove) > ( endViewHolders.view.position.y +  endViewHolders.view.dimensions.y)){
-                        return   new Vector2Df(0, (endViewHolders.view.position.y +  endViewHolders.view.dimensions.y) - (recyclerView.positionOffset.y + recyclerView.dimensions.y));
+                    if((recyclerView.getPositionOffset().y + recyclerView.getDimensions().y + orientationMove) > ( endViewHolders.view.getPosition().y +  endViewHolders.view.getDimensions().y)){
+                        return   new Vector2Df(0, (endViewHolders.view.getPosition().y +  endViewHolders.view.getDimensions().y) - (recyclerView.getPositionOffset().y + recyclerView.getDimensions().y));
                     }
                 } else {
-                    if((recyclerView.positionOffset.x + recyclerView.dimensions.x  + orientationMove) > ( endViewHolders.view.position.x +  endViewHolders.view.dimensions.x)){
-                        return new Vector2Df( (endViewHolders.view.position.x +  endViewHolders.view.dimensions.x) - (recyclerView.positionOffset.x + recyclerView.dimensions.x), 0);
+                    if((recyclerView.getPositionOffset().x + recyclerView.getDimensions().x  + orientationMove) > ( endViewHolders.view.getPosition().x +  endViewHolders.view.getDimensions().x)){
+                        return new Vector2Df( (endViewHolders.view.getPosition().x +  endViewHolders.view.getDimensions().x) - (recyclerView.getPositionOffset().x + recyclerView.getDimensions().x), 0);
                     }
                 }
             }
@@ -137,7 +139,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
             return;
         }
 
-        float orientationOffset = (this.orientation == VERTICAL) ? recyclerView.positionOffset.y : recyclerView.positionOffset.x;
+        float orientationOffset = (this.orientation == VERTICAL) ? recyclerView.getPositionOffset().y : recyclerView.getPositionOffset().x;
 
         while(highestPoint > orientationOffset){
 
@@ -176,9 +178,9 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
 
         float maxPosition;
         if(this.orientation == VERTICAL){
-            maxPosition = recyclerView.dimensions.y + recyclerView.positionOffset.y;
+            maxPosition = recyclerView.getDimensions().y + recyclerView.getPositionOffset().y;
         } else {
-            maxPosition = recyclerView.dimensions.x + recyclerView.positionOffset.x;
+            maxPosition = recyclerView.getDimensions().x + recyclerView.getPositionOffset().x;
         }
 
 
@@ -205,13 +207,13 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
 
     protected void removeViewsOutOfBounds(RecyclerView recyclerView){
 
-        viewCollisionBox.initTopLeft(recyclerView.positionOffset, recyclerView.dimensions);
+        viewCollisionBox.initTopLeft(recyclerView.getPositionOffset(), recyclerView.getDimensions());
 
         CollisionBox childCollisionBox = new CollisionBox();
 
         for(int i = 0; i < this.currentViewHolders.size(); i++){
             RecyclerView.ViewHolder child = this.currentViewHolders.get(i);
-            childCollisionBox.initTopLeft(child.view.position, child.view.dimensions);
+            childCollisionBox.initTopLeft(child.view.getPosition(), child.view.getDimensions());
             if(this.viewCollisionBox.boxCollisionTest(childCollisionBox) == false){
                 removeViewHolder(recyclerView, child);
                 i--;
@@ -220,12 +222,12 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
     }
 
     protected void onLayoutChild(RecyclerView recyclerView, View view, float top){
-        view.onMeasure((int)recyclerView.dimensions.x, (int)recyclerView.dimensions.y);
+        view.onMeasure((int)recyclerView.getDimensions().x, (int)recyclerView.getDimensions().y);
         if(this.orientation == this.VERTICAL){
-            view.onLayout((int)recyclerView.dimensions.x, view.getMeasuredHeight(), 0, (int)top);
+            view.onLayout((int)recyclerView.getDimensions().x, view.getMeasuredHeight(), 0, (int)top);
         }
         else {
-            view.onLayout(view.getMeasuredWidth(), (int)recyclerView.dimensions.y, (int)top, 0);
+            view.onLayout(view.getMeasuredWidth(), (int)recyclerView.getDimensions().y, (int)top, 0);
         }
     }
 
@@ -238,18 +240,18 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager {
     protected void initChildViewStart(RecyclerView recyclerView, RecyclerView.Adapter adapter, RecyclerView.ViewHolder viewHolder, float bottom){
         View newView = viewHolder.view;
         adapter.bindViewHolder(viewHolder, viewHolder.index);
-        viewHolder.view.onMeasure((int)recyclerView.dimensions.x, (int)recyclerView.dimensions.y);
+        viewHolder.view.onMeasure((int)recyclerView.getDimensions().x, (int)recyclerView.getDimensions().y);
 
         if(this.orientation == this.VERTICAL){
-            viewHolder.view.onLayout( (int)recyclerView.dimensions.x, newView.getMeasuredHeight(), 0, (int)bottom- newView.getMeasuredHeight());
+            viewHolder.view.onLayout( (int)recyclerView.getDimensions().x, newView.getMeasuredHeight(), 0, (int)bottom- newView.getMeasuredHeight());
         } else {
-            viewHolder.view.onLayout(newView.getMeasuredWidth(), (int)recyclerView.dimensions.y, (int)bottom- newView.getMeasuredWidth(), 0);
+            viewHolder.view.onLayout(newView.getMeasuredWidth(), (int)recyclerView.getDimensions().y, (int)bottom- newView.getMeasuredWidth(), 0);
         }
         recyclerView.addView(newView);
     }
 
     protected void scrollRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter, Vector2Df scrollAmount){
-        recyclerView.positionOffset = recyclerView.positionOffset.add(scrollAmount);
+        recyclerView.setPositionOffset(recyclerView.getPositionOffset().add(scrollAmount));
 
         if( ((this.orientation == VERTICAL) ? scrollAmount.y : scrollAmount.x) < 0){
             walkViewsToStart(recyclerView, adapter);
