@@ -57,6 +57,10 @@ public class LinearLayout extends ViewGroup {
 
     @Override
     public void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
+        if(visibility == View.GONE){
+            setMeasuredDimension(0, 0);
+            return;
+        }
         if (this.orientation == VERTICAL) {
             measureVertical(widthMeasureSpec, heightMeasureSpec);
         } else {
@@ -200,7 +204,8 @@ public class LinearLayout extends ViewGroup {
                 }
 
                 if ((this.gravity & Gravity.CENTER) == Gravity.CENTER) {
-                    childY = (int) ((height - totalLength) * 0.5f);
+                    //TODO: fix for when the totalLength is greater than height
+                    //childY = (int) ((height - totalLength) * 0.5f);
                 }
 
                 child.onLayout(child.getMeasuredWidth(), child.getMeasuredHeight(), childX, childY + orientationPosition + child.getTopMargin());

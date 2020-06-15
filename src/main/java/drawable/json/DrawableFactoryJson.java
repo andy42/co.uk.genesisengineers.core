@@ -19,7 +19,9 @@ import visualisation.TextureRegion;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DrawableFactoryJson {
 
@@ -95,14 +97,41 @@ public class DrawableFactoryJson {
         return null;
     }
 
+    private Set<Integer> returnEmptyIndexes(JSONObject jsonObject){
+        Set<Integer> emptyIndexSet = new HashSet<>();
+        try{
+            String stringValue = jsonObject.getString("emptyIndexes");
+            String[] ranges = stringValue.split(",");
+            for(String range : ranges){
+                String[] points = range.trim().split("-");
+                if(points.length != 2) continue;
+
+                int startPoint =Integer.parseInt(points[0]);
+                int endPoint =Integer.parseInt(points[1]);
+
+                for(int index =startPoint; index <= endPoint; index++){
+                    emptyIndexSet.add(index);
+                }
+            }
+        }
+        catch (Exception e){
+            return new HashSet<>();
+        }
+        return emptyIndexSet;
+    }
+
     private List<TextureRegion> createTextureRegionList(Texture texture, JSONObject jsonObject) throws Exception {
         int itemWidth = jsonObject.getInt("itemWidth");
         int itemHeight = jsonObject.getInt("itemHeight");
         int itemCount = jsonObject.getInt("itemCount");
+        int columns = jsonObject.getInt("columns");
+
+        Set<Integer> emptyIndexSet = returnEmptyIndexes(jsonObject);
 
         List<TextureRegion> regionList = new ArrayList();
         for (int i = 0; i < itemCount; i++) {
-            regionList.add(new TextureRegion(texture, new Vector2Df(itemWidth * i, 0), new Vector2Df(itemWidth, itemHeight)));
+            if(emptyIndexSet.contains(i)) continue;
+            regionList.add(new TextureRegion(texture, new Vector2Df(itemWidth * (i%columns), itemHeight*(int)(i/columns)), new Vector2Df(itemWidth, itemHeight)));
         }
         return regionList;
     }

@@ -5,10 +5,7 @@ import content.Context;
 import drawable.Drawable;
 import util.Logger;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 public class TextureManager {
 
@@ -41,6 +38,7 @@ public class TextureManager {
 
     public Texture addPngTexture (Context context, Asset asset) {
         Texture texture = new Texture();
+        texture.setId(asset.id);
         if (texture.initPng(context, asset.id) == true) {
             textureMap.put(asset.id, texture);
             return texture;
@@ -76,6 +74,10 @@ public class TextureManager {
         for (Texture texture : textureMap.values()) {
             texture.delete();
         }
+    }
+
+    public Collection<Texture> getTextures(){
+        return textureMap.values();
     }
 }
 

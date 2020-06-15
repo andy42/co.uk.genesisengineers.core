@@ -20,4 +20,11 @@ public class Context {
         Logger.info("getClass = "+this.getClass().getName());
         return this.getClass().getClassLoader();
     }
+
+    public int getWindowWidth(){
+        return 500;
+    }
+    public int getWindowHeight(){
+        return 500;
+    }
 }

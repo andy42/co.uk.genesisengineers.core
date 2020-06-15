@@ -101,6 +101,7 @@ public abstract class ViewGroup extends View {
         }
     }
 
+
     public void requestChildFocus(View child, View focused){
         if(this.currentFocused != child && this.currentFocused != null){
             this.currentFocused.unFocus();
@@ -116,12 +117,24 @@ public abstract class ViewGroup extends View {
     @Override
     public void render () {
         super.render();
+        if(visibility != VISIBLE) return;
         glPushMatrix();
         glTranslatef(position.x, position.y, 0);
         for (View view : children) {
             view.render();
         }
         glPopMatrix();
+    }
+
+    @Override
+    public void invalidateLayout(){
+        if(parent != null){
+            parent.invalidateLayout();
+            return;
+        }
+
+        onMeasure(context.getWindowWidth(), context.getWindowHeight());
+        onLayout(getMeasuredWidth(), getMeasuredHeight(), 0,0);
     }
 
     public LayoutParams generateLayoutParams (AttributeSet attrs) {
@@ -153,6 +166,9 @@ public abstract class ViewGroup extends View {
     }
 
     public View findViewById(int id){
+        if(this.getId() == id){
+            return this;
+        }
         for(View view : children){
             if(view.getId() == id){
                 return view;

@@ -79,7 +79,7 @@ public class View {
         if(this.id == id){
             return this;
         }
-        else return null;
+        return null;
     }
 
     public View () {
@@ -162,7 +162,14 @@ public class View {
     }
 
     public void setVisibility(int visibility) {
-        this.visibility = visibility;
+        if(this.visibility != visibility){
+            if(visibility == View.GONE || this.visibility == View.GONE){
+                this.visibility = visibility;
+                invalidateLayout();
+            } else {
+                this.visibility = visibility;
+            }
+        }
     }
 
     public Context getContext () {
@@ -198,10 +205,20 @@ public class View {
         }
     }
 
+    public void invalidateLayout(){
+        if(parent != null){
+            parent.invalidateLayout();
+        }
+    }
+
     public void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
         int width = getSize(layoutParams.width, widthMeasureSpec);
         int height = getSize(layoutParams.height, heightMeasureSpec);
 
+        if(visibility == View.GONE){
+            setMeasuredDimension(0, 0);
+            return;
+        }
         setMeasuredDimension(width, height);
     }
 

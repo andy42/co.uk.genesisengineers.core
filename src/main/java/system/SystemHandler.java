@@ -1,6 +1,7 @@
 package system;
 
 import entity.EntityHandler;
+import events.Event;
 import input.KeyEvent;
 import input.MotionEvent;
 
@@ -61,6 +62,15 @@ public class SystemHandler implements Iterable<SystemBase> {
         for (SystemBase system : systemList) {
             if(system instanceof MotionEventListener){
                 ((MotionEventListener) system).dispatchTouchEvent(motionEvent);
+            }
+        }
+        return false;
+    }
+
+    public boolean dispatchEvent(Event event){
+        for (SystemBase system : systemList) {
+            if(system instanceof EventListener){
+                ((EventListener) system).dispatchEvent(event);
             }
         }
         return false;

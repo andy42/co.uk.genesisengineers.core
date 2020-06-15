@@ -1,4 +1,6 @@
-package ui.view;
+package ui.view.recyclerLayoutManager;
+
+import ui.view.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -24,7 +26,7 @@ public class GridLayoutManager extends LinearLayoutManager {
         RecyclerView.ViewHolder lastChildAdded = null;
         float maxDimension = 0;
 
-        float columnWidth = (this.orientation == this.VERTICAL) ? recyclerView.dimensions.x/columnCount : recyclerView.dimensions.y/columnCount;
+        float columnWidth = (this.orientation == this.VERTICAL) ? recyclerView.getDimensions().x/columnCount : recyclerView.getDimensions().y/columnCount;
         viewHolderToAdd.clear();
 
         for(int i=0; i< columnCount; i++){
@@ -40,12 +42,12 @@ public class GridLayoutManager extends LinearLayoutManager {
                 adapter.bindViewHolder(lastChildAdded, newIndex);
 
                 if(this.orientation == this.VERTICAL){
-                    lastChildAdded.view.onMeasure((int)columnWidth, (int)recyclerView.dimensions.y);
+                    lastChildAdded.view.onMeasure((int)columnWidth, (int)recyclerView.getDimensions().y);
                     if(lastChildAdded.view.getMeasuredHeight() > maxDimension){
                         maxDimension = lastChildAdded.view.getMeasuredHeight();
                     }
                 } else {
-                    lastChildAdded.view.onMeasure((int)recyclerView.dimensions.x, (int)columnWidth);
+                    lastChildAdded.view.onMeasure((int)recyclerView.getDimensions().x, (int)columnWidth);
                     if(lastChildAdded.view.getMeasuredWidth() > maxDimension){
                         maxDimension = lastChildAdded.view.getMeasuredWidth();
                     }
@@ -57,9 +59,9 @@ public class GridLayoutManager extends LinearLayoutManager {
         for(int i=0; i< viewHolderToAdd.size(); i++){
             RecyclerView.ViewHolder viewHolder = viewHolderToAdd.get(i);
             if(this.orientation == this.VERTICAL){
-                viewHolder.view.onLayout( (int)columnWidth, (int)maxDimension,(int)columnWidth*i, (int)(lowestPoint - maxDimension) );
+                viewHolder.view.onLayout( (int)columnWidth, (int)maxDimension,(int)columnWidth*(columnCount -i -1), (int)(lowestPoint - maxDimension) );
             } else {
-                viewHolder.view.onLayout((int)maxDimension, (int)columnWidth, (int)(lowestPoint - maxDimension), (int)columnWidth*i);
+                viewHolder.view.onLayout((int)maxDimension, (int)columnWidth, (int)(lowestPoint - maxDimension), (int)columnWidth*(columnCount -i -1));
             }
 
             recyclerView.addView(viewHolder.view);
@@ -73,7 +75,7 @@ public class GridLayoutManager extends LinearLayoutManager {
         RecyclerView.ViewHolder lastChildAdded = null;
         float maxDimension = 0;
 
-        float columnWidth = (this.orientation == this.VERTICAL) ? recyclerView.dimensions.x/columnCount : recyclerView.dimensions.y/columnCount;
+        float columnWidth = (this.orientation == this.VERTICAL) ? recyclerView.getDimensions().x/columnCount : recyclerView.getDimensions().y/columnCount;
         viewHolderToAdd.clear();
 
         for(int i=0; i< columnCount; i++){
@@ -85,12 +87,12 @@ public class GridLayoutManager extends LinearLayoutManager {
                 adapter.bindViewHolder(lastChildAdded, newIndex);
 
                 if(this.orientation == this.VERTICAL){
-                    lastChildAdded.view.onMeasure((int)columnWidth, (int)recyclerView.dimensions.y);
+                    lastChildAdded.view.onMeasure((int)columnWidth, (int)recyclerView.getDimensions().y);
                     if(lastChildAdded.view.getMeasuredHeight() > maxDimension){
                         maxDimension = lastChildAdded.view.getMeasuredHeight();
                     }
                 } else {
-                    lastChildAdded.view.onMeasure((int)recyclerView.dimensions.x, (int)columnWidth);
+                    lastChildAdded.view.onMeasure((int)recyclerView.getDimensions().x, (int)columnWidth);
                     if(lastChildAdded.view.getMeasuredWidth() > maxDimension){
                         maxDimension = lastChildAdded.view.getMeasuredWidth();
                     }
@@ -134,9 +136,9 @@ public class GridLayoutManager extends LinearLayoutManager {
 
         float maxPosition;
         if(this.orientation == VERTICAL){
-            maxPosition = recyclerView.dimensions.y + recyclerView.positionOffset.y;
+            maxPosition = recyclerView.getDimensions().y + recyclerView.getPositionOffset().y;
         } else {
-            maxPosition = recyclerView.dimensions.x + recyclerView.positionOffset.x;
+            maxPosition = recyclerView.getDimensions().x + recyclerView.getPositionOffset().x;
         }
 
 
@@ -164,7 +166,7 @@ public class GridLayoutManager extends LinearLayoutManager {
             return;
         }
 
-        float orientationOffset = (this.orientation == VERTICAL) ? recyclerView.positionOffset.y : recyclerView.positionOffset.x;
+        float orientationOffset = (this.orientation == VERTICAL) ? recyclerView.getPositionOffset().y : recyclerView.getPositionOffset().x;
 
         while(highestPoint > orientationOffset){
 
