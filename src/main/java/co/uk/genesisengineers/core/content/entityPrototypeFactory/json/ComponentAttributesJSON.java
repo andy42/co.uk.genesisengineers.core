@@ -1,6 +1,7 @@
 package co.uk.genesisengineers.core.content.entityPrototypeFactory.json;
 
 import co.uk.genesisengineers.core.content.entityPrototypeFactory.ComponentAttributes;
+import co.uk.genesisengineers.core.util.Vector2Di;
 import org.json.JSONException;
 import org.json.JSONObject;
 import co.uk.genesisengineers.core.util.Vector2Df;
@@ -61,6 +62,23 @@ public class ComponentAttributesJSON implements ComponentAttributes {
 
         if(values.length == 2){
             return new Vector2Df(Float.parseFloat(values[0]), Float.parseFloat(values[1]));
+        }
+        return defaultValue;
+    }
+
+    @Override
+    public Vector2Di getVector2Di(String key, Vector2Di defaultValue) {
+        String value;
+        try{
+            value =  jsonObject.getString(key);
+        }catch (JSONException e){
+            return defaultValue;
+        }
+
+        String[] values = value.split(",");
+
+        if(values.length == 2){
+            return new Vector2Di(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
         }
         return defaultValue;
     }

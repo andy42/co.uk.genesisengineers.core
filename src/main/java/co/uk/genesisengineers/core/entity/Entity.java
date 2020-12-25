@@ -8,6 +8,7 @@ public class Entity implements Cloneable{
 
 
     private int id;
+    private boolean active = true;
     private ArrayList<ComponentBase> componentList = new ArrayList<>();
 
     public Entity (int id) {
@@ -30,8 +31,23 @@ public class Entity implements Cloneable{
         this.id = id;
     }
 
-    public boolean hasComponent (ComponentBase.Type componentType) {
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean hasComponent (int componentType) {
         return (getComponent(componentType) != null);
+    }
+
+    public boolean hasComponents (int...  componentTypes) {
+        for(int componentType : componentTypes){
+            if(hasComponent(componentType) == false)return false;
+        }
+        return true;
     }
 
     public boolean addComponent (ComponentBase component) {
@@ -43,7 +59,7 @@ public class Entity implements Cloneable{
         return true;
     }
 
-    public ComponentBase getComponent (ComponentBase.Type componentType) {
+    public ComponentBase getComponent (int componentType) {
         for (ComponentBase component : componentList) {
             if (component.getType() == componentType) {
                 return component;
