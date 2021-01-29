@@ -13,18 +13,25 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_COORD_ARRAY;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 
-public class DrawableTextureArray implements Drawable, DrawableArray{
+public class DrawableTextureArray implements  DrawableArray{
 
+    private int id;
     private Texture texture;
     private List<TextureRegion> textureRegionList;
     private Shape shape;
     private Vector2Df dimensions;
 
-    public DrawableTextureArray(Texture texture, List<TextureRegion> textureRegionList, Shape shape, Vector2Df dimensions){
+    public DrawableTextureArray(int id, Texture texture, List<TextureRegion> textureRegionList, Shape shape, Vector2Df dimensions){
+        this.id = id;
         this.texture = texture;
         this.textureRegionList = textureRegionList;
         this.shape = shape;
         this.dimensions = dimensions;
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     @Override

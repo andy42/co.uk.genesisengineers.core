@@ -62,15 +62,23 @@ public class Resources {
     public Asset  getAsset(int id){
         return assetsMap.getAsset(id);
     }
+    
     public int getAssetId(String assetId){
         return assetsMap.getAssetId(assetId);
+    }
+    
+    public String getAssetIdString(int id){
+        Asset asset =  assetsMap.getAsset(id);
+        if(asset == null){
+            return null;
+        }
+        return asset.assetId;
     }
 
     public void loadColors(Context context, int assetId){
         colors.loadRes(context, assetId);
     }
-
-
+    
     public Color getColor(int colorId, String themeName){
         return colors.getColor(colorId, themeName);
     }
