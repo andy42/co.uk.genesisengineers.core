@@ -74,20 +74,20 @@ public class DrawableFactoryJson {
                 case DRAWABLE_COLOR_KEY:
                     Vec3f color = AttributeParser.colorFromString(jsonObject.getString(COLOR_KEY));
                     shape = shapeManager.getShape(jsonObject.getInt(SHAPE_KEY));
-                    return new DrawableColor(color, shape);
+                    return new DrawableColor(resId, color, shape);
 
                 case DRAWABLE_TEXTURE_KEY:
                     texture = textureManager.getTexture(jsonObject.getInt(TEXTURE_KEY));
                     shape = shapeManager.getShape(jsonObject.getInt(SHAPE_KEY));
                     dimensions= new Vector2Df(texture.getWidth(), texture.getHeight());
-                    return new DrawableTexture(texture, new TextureRegion(texture, new Vector2Df(0, 0), dimensions), shape, dimensions);
+                    return new DrawableTexture(resId, texture, new TextureRegion(texture, new Vector2Df(0, 0), dimensions), shape, dimensions);
 
                 case DRAWABLE_TEXTURE_ARRAY_KEY:
                     texture = textureManager.getTexture(jsonObject.getInt(TEXTURE_KEY));
                     shape = shapeManager.getShape(jsonObject.getInt(SHAPE_KEY));
                     itemWidth = jsonObject.getInt("itemWidth");
                     itemHeight = jsonObject.getInt("itemHeight");
-                    return new DrawableTextureArray(texture, createTextureRegionList(texture, jsonObject), shape, new Vector2Df(itemWidth, itemHeight));
+                    return new DrawableTextureArray(resId, texture, createTextureRegionList(texture, jsonObject), shape, new Vector2Df(itemWidth, itemHeight));
             }
         }
         catch (Exception e){

@@ -10,16 +10,23 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class DrawableTexture implements Drawable {
 
+    private int id;
     private Texture texture;
     private TextureRegion textureRegion;
     private Shape shape;
     private Vector2Df dimensions;
 
-    public DrawableTexture(Texture texture, TextureRegion textureRegion, Shape shape, Vector2Df dimensions){
+    public DrawableTexture(int id, Texture texture, TextureRegion textureRegion, Shape shape, Vector2Df dimensions){
+        this.id = id;
         this.texture = texture;
         this.textureRegion = textureRegion;
         this.shape = shape;
         this.dimensions = dimensions;
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     @Override

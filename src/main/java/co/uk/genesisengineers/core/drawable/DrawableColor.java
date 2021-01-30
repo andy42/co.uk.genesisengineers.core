@@ -11,13 +11,20 @@ import static org.lwjgl.opengl.GL11.glRotatef;
 
 public class DrawableColor implements Drawable {
 
+    private int id;
     private Vec3f color;
     private Shape shape;
     private Vector2Df dimensions = new Vector2Df(1,1);
 
-    public DrawableColor(Vec3f color, Shape shape){
+    public DrawableColor(int id, Vec3f color, Shape shape){
+        this.id = id;
         this.color = color;
         this.shape = shape;
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 
     @Override

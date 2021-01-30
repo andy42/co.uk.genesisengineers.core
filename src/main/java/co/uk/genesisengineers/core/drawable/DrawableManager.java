@@ -58,7 +58,7 @@ public class DrawableManager {
     //used to create drawables from colors so you do not have to define them all individually
     public void createColorDrawables(Collection<Color> colors, Shape shape){
         for(Color color : colors){
-            addDrawable(color.id, new DrawableColor(AttributeParser.colorFromString(color.hexValue), shape));
+            addDrawable(color.id, new DrawableColor(color.id, AttributeParser.colorFromString(color.hexValue), shape));
         }
     }
 
@@ -67,7 +67,7 @@ public class DrawableManager {
         for(Texture texture : textures){
             try {
                 Vector2Df dimensions= new Vector2Df(texture.getWidth(), texture.getHeight());
-                addDrawable(texture.getId(), new DrawableTexture(texture, new TextureRegion(texture, new Vector2Df(0, 0), dimensions), shape, dimensions));
+                addDrawable(texture.getId(), new DrawableTexture(texture.getId(), texture, new TextureRegion(texture, new Vector2Df(0, 0), dimensions), shape, dimensions));
             }
             catch (Exception e){
                 Logger.exception(e, e.getMessage());
